@@ -52,7 +52,9 @@ void Multiplayer_JoinServer(char *ip, const Uint16 port) {
 }
 
 void Multiplayer_ServerWaitPlayer() {
-    client = SDLNet_TCP_Accept(serveur);
+    if ((client = SDLNet_TCP_Accept(serveur)) != NULL) {
+        printf("Heyheyjey");
+    }
 }
 
 int Multiplayer_IsServer() {
