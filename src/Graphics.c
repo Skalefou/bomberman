@@ -1,14 +1,14 @@
 /*
  * file : graphics.c
  *
- * Ensemble des fonctions utilisé par la structure Graphics gérant les fonctionnalités graphiques du projet
+ * Ensemble des fonctions utilisé par la structure graphics gérant les fonctionnalités graphiques du projet
  */
 
 #include "Graphics.h"
 
 static Graphics graphics;
 
-void Graphics_InitSDL() {
+void Graphics_Init() {
     if(SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         fprintf(stderr, "Error in SDL_Init : %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
@@ -22,6 +22,6 @@ void Graphics_InitSDL() {
     SDL_WM_SetCaption("Bomberman", NULL);
 }
 
-void Graphics_CloseSDL() {
+void Graphics_Close() {
     SDL_Quit();
 }

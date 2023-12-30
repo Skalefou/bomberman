@@ -20,8 +20,8 @@ typedef struct {
 } Graphics;
 
 //Fonction initialisant la SDL, la fenêtre et l'affichage vidéo
-void Graphics_InitSDL();
+void Graphics_Init();
 //Fonction fermant la SDL, la fenêtre et l'affichage vidéo
-void Graphics_CloseSDL();
+void Graphics_Close();
 
 #endif

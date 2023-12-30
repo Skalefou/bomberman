@@ -4,6 +4,7 @@ project(bomberman C)
 set(CMAKE_C_STANDARD 11)
 
 find_package(SDL REQUIRED)
+find_package(SDL_net REQUIRED)
 
 add_executable(bomberman
         src/main.c
@@ -11,7 +12,9 @@ add_executable(bomberman
         src/Game.c
         src/Graphics.h
         src/Graphics.c
+        src/Multiplayer.c
+        src/Multiplayer.h
 )
 
-target_link_libraries(bomberman PRIVATE ${SDL_LIBRARY})
+target_link_libraries(bomberman PRIVATE ${SDL_LIBRARY} ${SDL_NET_LIBRARY})
 target_include_directories(bomberman PRIVATE ${SDL_INCLUDE_DIR})
