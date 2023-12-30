@@ -35,9 +35,9 @@ void Game_RunGame() {
 
     if(placeholder_startMultiplayer(&connectionInfo) == 1) {
         if(connectionInfo.host == NULL) {
-
-        } else {
             Multiplayer_CreateServer(connectionInfo.port);
+        } else {
+            Multiplayer_JoinServer("127.0.0.1", connectionInfo.port);
         }
     }
 
@@ -45,6 +45,11 @@ void Game_RunGame() {
     SDL_Event event;
     while(active) {
         SDL_WaitEvent(&event);
+
+        if(Multiplayer_IsServer()) {
+            Multiplayer_ServerWaitPlayer();
+        }
+
         switch(event.type) {
             case SDL_QUIT : active = 0; break;
             case SDL_KEYUP : active = 0; break;
