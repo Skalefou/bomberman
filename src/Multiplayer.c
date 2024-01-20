@@ -12,6 +12,7 @@ void Multiplayer_Init() {
     }
     multiplayer.numberOfPlayer = 1;
     multiplayer.userConnectionInfo = malloc(sizeof(ConnectionInfo));
+    multiplayer.state = MULTIPLAYER_NONE_STATE;
 }
 
 void Multiplayer_CreateServer(const Uint16 port) {
@@ -26,6 +27,7 @@ void Multiplayer_CreateServer(const Uint16 port) {
         fprintf(stderr, "Erreur SDLNet_TCP_Open : %s\n", SDLNet_GetError());
         exit(EXIT_FAILURE);
     }
+    multiplayer.state = MULTIPLAYER_WAITING_PLAYER;
 }
 
 void Multiplayer_JoinServer(char *ip, const Uint16 port) {
@@ -53,8 +55,20 @@ void Multiplayer_JoinServer(char *ip, const Uint16 port) {
 
 void Multiplayer_ServerWaitPlayer() {
     if ((client = SDLNet_TCP_Accept(serveur)) != NULL) {
+        multiplayer.state = MULTIPLAYER_CONTINUE;
         printf("Heyheyjey");
     }
+}
+
+int Multiplayer_State() {
+    return multiplayer.state;
+}
+
+void Multiplayer_DisplayTest() {
+    char text[256];
+    sprintf(text, "State : %s\n",
+            (multiplayer.state == MULTIPLAYER_WAITING_PLAYER ? "Connected" : "Not connected"));
+    Graphics_DebugTextDisplay(text);
 }
 
 int Multiplayer_IsServer() {

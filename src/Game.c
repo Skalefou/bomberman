@@ -44,16 +44,20 @@ void Game_RunGame() {
     int active = 1;
     SDL_Event event;
     while(active) {
+        SDL_Delay(16);
         SDL_WaitEvent(&event);
-
-        if(Multiplayer_IsServer()) {
-            Multiplayer_ServerWaitPlayer();
-        }
 
         switch(event.type) {
             case SDL_QUIT : active = 0; break;
             case SDL_KEYUP : active = 0; break;
             default : break;
         }
+
+        switch (Multiplayer_State()) {
+            case MULTIPLAYER_WAITING_PLAYER: Multiplayer_ServerWaitPlayer(); break;
+        }
+        Graphics_ClearScreen();
+        Multiplayer_DisplayTest();
+        Graphics_UpdateScreen();
     }
 }
