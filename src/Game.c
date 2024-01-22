@@ -8,8 +8,8 @@
 #include "Graphics.h"
 
 void Game_RunGame() {
-    Graphics_InitSDL();
-    atexit(Graphics_CloseSDL);
+    Graphics_Init();
+    atexit(Graphics_Close);
 
     int active = 1;
     SDL_Event event;
