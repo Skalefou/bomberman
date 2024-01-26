@@ -8,18 +8,20 @@
 #define BOMBERMAN_GRAPHICS_H
 
 #include <stdio.h>
+#include <string.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 
 #include "Game.h"
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 800
+#define WINDOW_WIDTH 1280
+#define WINDOW_HEIGHT 720
 
-#define NUMBER_TEXTURE_PLAYER 18
+#define NUMBER_TEXTURE_PER_PLAYER 18
+#define TEXTURE_PATH "media/texture"
 
 typedef struct {
-    SDL_Surface *surface;
+    SDL_Surface **surface;
     int numberOfSurface;
 } Texture;
 
