@@ -12,13 +12,8 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 
-#include "Game.h"
-
-#define WINDOW_WIDTH 1280
-#define WINDOW_HEIGHT 720
-
-#define NUMBER_TEXTURE_PER_PLAYER 18
-#define TEXTURE_PATH "media/texture"
+#include "const.h"
+#include "Utils.h"
 
 typedef struct {
     SDL_Surface **surface;
@@ -30,6 +25,7 @@ typedef struct {
     //Rendu et fenêtre
     SDL_Surface *screen;
     Texture *player;
+    Texture tiles;
 
 } Graphics;
 
@@ -39,5 +35,6 @@ void Graphics_Init();
 void Graphics_closePlayer();
 void Graphics_Close();
 void Graphics_loadGraphicsPlayers();
+void Graphics_loadGraphicsTiles();
 
 #endif

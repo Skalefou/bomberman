@@ -23,12 +23,13 @@ void Graphics_loadGraphicsPlayers() {
                     fprintf(stderr, "Error in loading players asset (not enough texture)\n");
                     continue;
                 }
-                // CACA
-                SDL_Surface *surface = IMG_Load(strcat("Salut", line));
+
+                char path[256] = TEXTURE_PATH;
+                strcat(path, line);
+                Utils_RemoveNewLineAtEnd(path);
+                graphics.player[i].surface[y] = IMG_Load(path);
                 if (graphics.player[i].surface[y] == NULL) {
-                    fprintf(stderr, "Error in loading players assets (error in the texture path)\n");
-                } else {
-                    fprintf(stderr, "OPEN TEXTURE\n");
+                    fprintf(stderr, "%s\n", IMG_GetError());
                 }
             }
         }
@@ -38,6 +39,11 @@ void Graphics_loadGraphicsPlayers() {
     }
 
     fclose(file);
+}
+
+void Graphics_loadGraphicsTiles() {
+    graphics.tiles.numberOfSurface = NUMBER_TILES;
+    graphics.tiles.surface = malloc(sizeof(SDL_Surface*) * NUMBER_TILES);
 }
 
 void Graphics_Init() {
@@ -57,6 +63,7 @@ void Graphics_Init() {
     }
     SDL_WM_SetCaption("Bomberman", NULL);
     Graphics_loadGraphicsPlayers();
+    Graphics_loadGraphicsTiles();
 }
 
 void Graphics_closePlayer() {
@@ -68,5 +75,6 @@ void Graphics_closePlayer() {
 
 void Graphics_Close() {
     Graphics_closePlayer();
+    free(graphics.tiles.surface);
     SDL_Quit();
 }

@@ -7,9 +7,8 @@
 #ifndef BOMBERMAN_GAME_H
 #define BOMBERMAN_GAME_H
 
+#include "const.h"
 #include "Graphics.h"
-
-#define NUMBER_MAX_PLAYER 1
 
 /* Fonction principale du jeu, elle débute par la construction des ressources utilisé par le jeu, leur utilisation pour
  * ensuite finir avec la libération de la mémoire */

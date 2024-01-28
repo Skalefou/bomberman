@@ -1,0 +1,13 @@
+#ifndef BOMBERMAN_CONST_H
+#define BOMBERMAN_CONST_H
+
+#define WINDOW_WIDTH 1280
+#define WINDOW_HEIGHT 720
+
+#define NUMBER_TEXTURE_PER_PLAYER 16
+#define TEXTURE_PATH "media/texture/"
+#define NUMBER_TILES 2
+
+#define NUMBER_MAX_PLAYER 1
+
+#endif
