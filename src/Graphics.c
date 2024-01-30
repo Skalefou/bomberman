@@ -14,10 +14,10 @@ void Graphics_loadGraphicsPlayers() {
     graphics.player = malloc(sizeof(Texture) * NUMBER_MAX_PLAYER);
 
     if (file != NULL) {
-        char line[256];
-        for (int i = 0; i < NUMBER_MAX_PLAYER; i++){
-            graphics.player[i].surface = malloc(sizeof(SDL_Surface*) * NUMBER_TEXTURE_PER_PLAYER);
-            graphics.player[i].numberOfSurface = NUMBER_TEXTURE_PER_PLAYER;
+    char line[256];
+    for (int i = 0; i < NUMBER_MAX_PLAYER; i++){
+        graphics.player[i].surface = malloc(sizeof(SDL_Surface*) * NUMBER_TEXTURE_PER_PLAYER);
+        graphics.player[i].numberOfSurface = NUMBER_TEXTURE_PER_PLAYER;
             for (int y = 0; y < NUMBER_TEXTURE_PER_PLAYER; y++) {
                 if (fgets(line, sizeof(line), file) == NULL) {
                     fprintf(stderr, "Error in loading players asset (not enough texture)\n");
@@ -32,18 +32,41 @@ void Graphics_loadGraphicsPlayers() {
                     fprintf(stderr, "%s\n", IMG_GetError());
                 }
             }
+            fclose(file);
         }
     } else {
         fprintf(stderr, "Error opening \"media/playerTexture.txt\"\n");
         exit(EXIT_FAILURE);
     }
-
-    fclose(file);
 }
 
 void Graphics_loadGraphicsTiles() {
+    FILE *file = fopen("media/tilesTexture.txt", "r");
+
     graphics.tiles.numberOfSurface = NUMBER_TILES;
     graphics.tiles.surface = malloc(sizeof(SDL_Surface*) * NUMBER_TILES);
+
+    if (file == NULL) {
+        fprintf(stderr, "Error opening \"media/tilesTexture.txt\"\n");
+        exit(EXIT_FAILURE);
+    }
+
+    char line[256];
+    for (int i = 0; i < NUMBER_TILES; i++) {
+        if (fgets(line, sizeof(line), file) == NULL) {
+            fprintf(stderr, "Error in loading players asset (not enough texture)\n");
+            continue;
+        }
+
+        char path[256] = TEXTURE_PATH;
+        strcat(path, line);
+        Utils_RemoveNewLineAtEnd(path);
+        graphics.tiles.surface[i] = IMG_Load(path);
+        if (graphics.tiles.surface[i] == NULL) {
+            fprintf(stderr, "%s\n", IMG_GetError());
+        }
+    }
+    fclose(file);
 }
 
 void Graphics_Init() {

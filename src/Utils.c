@@ -6,3 +6,8 @@ void Utils_RemoveNewLineAtEnd(char *line) {
         line[size-1] = '\000';
     }
 }
+
+int Utils_VerifyExtensionFile(char *path, char *ext) {
+    const char *dot = strrchr(path, '.');
+    return (dot != NULL && strcmp(dot, ext) == 0);
+}

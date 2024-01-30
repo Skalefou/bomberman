@@ -15,6 +15,10 @@ add_executable(bomberman
         src/const.h
         src/Utils.c
         src/Utils.h
+        src/Map.c
+        src/Map.h
+        src/Player.c
+        src/Player.h
 )
 
 target_link_libraries(bomberman PRIVATE ${SDL_LIBRARY} ${SDL_IMAGE_LIBRARY})

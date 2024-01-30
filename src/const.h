@@ -1,12 +1,46 @@
 #ifndef BOMBERMAN_CONST_H
 #define BOMBERMAN_CONST_H
 
+enum {
+    PLAYER_DOWN,
+    PLAYER_WALK_DOWN_1,
+    PLAYER_WALK_DOWN_2,
+    PLAYER_LEFT,
+    PLAYER_WALK_LEFT_1,
+    PLAYER_WALK_LEFT_2,
+    PLAYER_RIGHT,
+    PLAYER_WALK_RIGHT_1,
+    PLAYER_WALK_RIGHT_2,
+    PLAYER_UP,
+    PLAYER_WALK_UP_1,
+    PLAYER_WALK_UP_2,
+    PLAYER_DIE_1,
+    PLAYER_DIE_2,
+    PLAYER_DIE_3,
+    PLAYER_DIE_4,
+    PLAYER_DIE_5,
+    PLAYER_DIE_6,
+};
+
+enum {
+    TILE_WALL,
+    TILE_WALL_BREAK
+};
+
+// Graphics const
+
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
-
-#define NUMBER_TEXTURE_PER_PLAYER 16
+#define NUMBER_TEXTURE_PER_PLAYER 18
 #define TEXTURE_PATH "media/texture/"
 #define NUMBER_TILES 2
+
+// Map const
+
+#define FILE_NAME_LIMIT_SIZE 255
+#define MAP_PATH "media/map/"
+
+// Game const
 
 #define NUMBER_MAX_PLAYER 1
 

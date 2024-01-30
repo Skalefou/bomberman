@@ -10,6 +10,9 @@
 void Game_RunGame() {
     Graphics_Init();
     atexit(Graphics_Close);
+    Map_Init();
+    atexit(Map_Close);
+
 
     int active = 1;
     SDL_Event event;
