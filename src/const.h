@@ -39,6 +39,7 @@ enum {
 
 #define FILE_NAME_LIMIT_SIZE 255
 #define MAP_PATH "media/map/"
+#define LIMIT_SIZE_LINE_MAP_FILE 8192
 
 // Game const
 

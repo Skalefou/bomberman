@@ -18,7 +18,6 @@ typedef struct {
     char **listNameMap;
     int numberListNameMap;
     int idUsedMap;
-
     int **tileMap;
     int size_x, size_y;
 } Map;
@@ -26,6 +25,7 @@ typedef struct {
 int Map_OpenMap(const int id);
 void Map_addListNameMap(char *name);
 void Map_Init();
+void Map_CloseMap();
 void Map_Close();
 
 

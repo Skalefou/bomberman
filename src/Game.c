@@ -13,6 +13,8 @@ void Game_RunGame() {
     Map_Init();
     atexit(Map_Close);
 
+    Map_OpenMap(0);
+
 
     int active = 1;
     SDL_Event event;

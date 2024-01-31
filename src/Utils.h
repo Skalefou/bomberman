@@ -5,5 +5,6 @@
 
 void Utils_RemoveNewLineAtEnd(char *line);
 int Utils_VerifyExtensionFile(char *path, char *ext);
+void Utils_splitChar(char *line, char splitChar);
 
 #endif

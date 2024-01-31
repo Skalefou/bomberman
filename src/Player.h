@@ -4,6 +4,7 @@
 #include <SDL.h>
 
 typedef struct {
+    char *name;
     SDL_Rect position;
 } Player;
 
