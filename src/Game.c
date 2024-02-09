@@ -20,10 +20,15 @@ void Game_RunGame() {
     SDL_Event event;
     while(active) {
         SDL_WaitEvent(&event);
+
         switch(event.type) {
             case SDL_QUIT : active = 0; break;
             case SDL_KEYUP : active = 0; break;
             default : break;
         }
+
+        Graphics_ClearScreen();
+        Map_DisplayMap();
+        Graphics_RefreshScreen();
     }
 }

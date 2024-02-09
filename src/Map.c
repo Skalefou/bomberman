@@ -48,7 +48,6 @@ int Map_OpenMap(const int id) {
         map.tileMap = tmpTileMap;
 
         for(int i = 0; i < map.size_x; i++) {
-            int iid = (line[i] - '0');
             if ((line[i] - '0') < 0 || (line[i] - '0') > NUMBER_TILES) {
                 map.tileMap[map.size_y-1][i] = 0;
                 fprintf(stderr, "Invalid tile id map : %s\n", map.listNameMap[id]);
@@ -58,8 +57,6 @@ int Map_OpenMap(const int id) {
             }
         }
     }
-
-
     fclose(file);
     return 0;
 }
@@ -89,6 +86,7 @@ void Map_Init() {
     map.numberListNameMap = 0;
     map.idUsedMap = -1;
 
+    // Et ouep, notre projet s'adapte à windaube et linux
 #ifdef _WIN32
     WIN32_FIND_DATA findFileData;
     HANDLE hFind = FindFirstFile(MAP_PATH, &findFileData);
@@ -120,6 +118,17 @@ void Map_Init() {
     closedir(dir);
 #endif
 }
+
+void Map_DisplayMap() {
+
+
+    for(int y = 0; y < map.size_y; y++) {
+        for(int x = 0; x < map.size_x; x++) {
+            SDL_Rect position = {(Sint16)(x * SIZE_TEXTURE_TILE_ORIGINAL_PIXEL * ZOOM_TEXTURE), (Sint16)(y * SIZE_TEXTURE_TILE_ORIGINAL_PIXEL * ZOOM_TEXTURE)};
+            Graphics_DisplayTile(map.tileMap[y][x], position);
+        }
+    }
+};
 
 void Map_CloseMap() {
     for(int i = 0; i < map.size_y; i++) {

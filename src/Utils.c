@@ -22,5 +22,5 @@ void Utils_splitChar(char *line, char splitChar) {
             j++;
         }
     }
-    line[j] = '\000';
+    line[j-1] = '\000';
 }

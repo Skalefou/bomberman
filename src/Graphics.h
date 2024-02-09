@@ -33,6 +33,11 @@ typedef struct {
 //Fonction initialisant la SDL, la fenêtre et l'affichage vidéo
 void Graphics_Init();
 //Fonction fermant la SDL, la fenêtre et l'affichage vidéo
+
+SDL_Surface* Graphics_resizeSurface(SDL_Surface *surface, int newWidth, int newHeight);
+void Graphics_ClearScreen();
+void Graphics_RefreshScreen();
+void Graphics_DisplayTile(int idTile, SDL_Rect position);
 void Graphics_closePlayer();
 void Graphics_Close();
 void Graphics_loadGraphicsPlayers();

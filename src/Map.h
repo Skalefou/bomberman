@@ -13,6 +13,7 @@
 
 #include "const.h"
 #include "Utils.h"
+#include "Graphics.h"
 
 typedef struct {
     char **listNameMap;
@@ -25,6 +26,7 @@ typedef struct {
 int Map_OpenMap(const int id);
 void Map_addListNameMap(char *name);
 void Map_Init();
+void Map_DisplayMap();
 void Map_CloseMap();
 void Map_Close();
 

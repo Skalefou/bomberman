@@ -24,16 +24,21 @@ enum {
 
 enum {
     TILE_WALL,
-    TILE_WALL_BREAK
+    TILE_GRASS,
+    TILE_SHADOW,
+    TILE_BRICK,
+    TILE_AIR
 };
 
 // Graphics const
 
-#define WINDOW_WIDTH 1280
-#define WINDOW_HEIGHT 720
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
 #define NUMBER_TEXTURE_PER_PLAYER 18
 #define TEXTURE_PATH "media/texture/"
-#define NUMBER_TILES 2
+#define NUMBER_TILES 5
+#define ZOOM_TEXTURE 3
+#define SIZE_TEXTURE_TILE_ORIGINAL_PIXEL 16
 
 // Map const
 

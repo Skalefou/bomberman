@@ -8,6 +8,14 @@
 
 static Graphics graphics;
 
+SDL_Surface* Graphics_resizeSurface(SDL_Surface *surface, int newWidth, int newHeight) {
+    SDL_Surface *resizedSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, newWidth, newHeight, surface->format->BitsPerPixel,
+                                                       surface->format->Rmask, surface->format->Gmask,
+                                                       surface->format->Bmask, surface->format->Amask);
+    SDL_FillRect(resizedSurface, NULL, SDL_MapRGB(surface->format, 255, 255, 255));
+    return resizedSurface;
+}
+
 void Graphics_loadGraphicsPlayers() {
     FILE *file = fopen("media/playerTexture.txt", "r");
 
@@ -65,8 +73,19 @@ void Graphics_loadGraphicsTiles() {
         if (graphics.tiles.surface[i] == NULL) {
             fprintf(stderr, "%s\n", IMG_GetError());
         }
+        graphics.tiles.surface[i] = Graphics_resizeSurface(graphics.tiles.surface[i],
+                                                           SIZE_TEXTURE_TILE_ORIGINAL_PIXEL*ZOOM_TEXTURE,
+                                                           SIZE_TEXTURE_TILE_ORIGINAL_PIXEL*ZOOM_TEXTURE);
     }
     fclose(file);
+}
+
+void Graphics_ClearScreen() {
+    SDL_FillRect(graphics.screen, NULL, SDL_MapRGB(graphics.screen->format, 0, 0, 0));
+}
+
+void Graphics_RefreshScreen() {
+    SDL_Flip(graphics.screen);
 }
 
 void Graphics_Init() {
@@ -89,6 +108,10 @@ void Graphics_Init() {
     Graphics_loadGraphicsTiles();
 }
 
+void Graphics_DisplayTile(int idTile, SDL_Rect position) {
+    SDL_BlitSurface(graphics.tiles.surface[idTile], NULL, graphics.screen, &position);
+}
+
 void Graphics_closePlayer() {
     for(int i = 0; i < NUMBER_MAX_PLAYER; i++) {
         free(graphics.player[i].surface);
@@ -99,5 +122,6 @@ void Graphics_closePlayer() {
 void Graphics_Close() {
     Graphics_closePlayer();
     free(graphics.tiles.surface);
+    SDL_FreeSurface(graphics.screen);
     SDL_Quit();
 }
