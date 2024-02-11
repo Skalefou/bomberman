@@ -12,18 +12,18 @@ include_directories(${SDL2_INCLUDE_DIR})
 
 # Ajoutez les fichiers source de votre projet
 add_executable(bomberman_SDL2_2
-        main.c
-        Game.c
-        Map.c
-        Graphics.c
-        Utils.c
-        const.h
-        Game.h
-        Graphics.h
-        Map.h
-        Utils.h
-        Player.c
-        Player.h)
+        src/main.c
+        src/Game.c
+        src/Map.c
+        src/Graphics.c
+        src/Utils.c
+        src/const.h
+        src/Game.h
+        src/Graphics.h
+        src/Map.h
+        src/Utils.h
+        src/Player.c
+        src/Player.h)
 
 # Spécifiez les bibliothèques SDL2 à lier
 target_link_directories(bomberman_SDL2_2 PRIVATE ${SDL2_LIBRARY_DIR})
