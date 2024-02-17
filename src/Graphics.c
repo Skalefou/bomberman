@@ -49,14 +49,14 @@ void Graphics_loadGraphicsPlayers() {
 
 void Graphics_DisplayMenu() {
     // Charger l'image à partir d'un fichier
-    SDL_Surface* menuSurface = IMG_Load("media/menu/menu.png");
+    SDL_Surface *menuSurface = IMG_Load("media/menu/menu.png");
     if (menuSurface == NULL) {
         fprintf(stderr, "Erreur lors du chargement de l'image du menu : %s\n", IMG_GetError());
         return;
     }
 
     // Créer une texture à partir de l'image
-    SDL_Texture* menuTexture = SDL_CreateTextureFromSurface(graphics.renderer, menuSurface);
+    SDL_Texture *menuTexture = SDL_CreateTextureFromSurface(graphics.renderer, menuSurface);
     if (menuTexture == NULL) {
         fprintf(stderr, "Erreur lors de la création de la texture du menu : %s\n", SDL_GetError());
         SDL_FreeSurface(menuSurface);
@@ -68,21 +68,47 @@ void Graphics_DisplayMenu() {
     // Rendre la texture à l'écran
     SDL_RenderCopy(graphics.renderer, menuTexture, NULL, NULL);
 
+    /* Charger la police de caractères
+    TTF_Font* font = TTF_OpenFont("media/menu/retro_gaming/Retrogaming.ttf", 14);
+    if (font == NULL) {
+        fprintf(stderr, "Erreur lors du chargement de la police : %s\n", TTF_GetError());
+        return;
+    }
+
+    // Obtenir la taille du texte
+    int textWidth, textHeight;
+    if (TTF_SizeText(font, "multijoueur", &textWidth, &textHeight) != 0) {
+        fprintf(stderr, "Erreur lors de la récupération de la taille du texte : %s\n", TTF_GetError());
+        TTF_CloseFont(font);
+        return;
+    }*/
+
     // Mettre à jour l'écran
     SDL_RenderPresent(graphics.renderer);
 
     // Attendre un certain temps pour que le menu soit visible
     SDL_Event event;
-    while(1){
+    while (1) {
         SDL_WaitEvent(&event);
-        if(event.type == SDL_MOUSEBUTTONDOWN){
-            break;
-        }
-    }
+        if (event.type == SDL_MOUSEBUTTONDOWN) {
+            int x = event.button.x;
+            int y = event.button.y;
+            int width, height;
+            SDL_GetWindowSize(graphics.window, &width, &height);
 
-    // Libérer la texture car nous n'en avons plus besoin
-    SDL_DestroyTexture(menuTexture);
+
+            if ((x << 1) > (width - 370) && (x << 1) < (height + 111) && (y << 1) > (height - 111) &&
+                (y << 1) < (width + 370)) {
+                break;
+            }
+        }
+
+        // Libérer la texture car nous n'en avons plus besoin
+        SDL_DestroyTexture(menuTexture);
+    }
 }
+
+
 
 void Graphics_loadGraphicsTiles() {
     SDL_Surface *surface;
