@@ -11,6 +11,7 @@
 void Game_RunGame() {
     Graphics_Init();
     atexit(Graphics_Close);
+    Graphics_DisplayMenu();
     Map_Init();
     atexit(Map_Close);
 

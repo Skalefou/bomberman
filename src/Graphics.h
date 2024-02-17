@@ -48,5 +48,6 @@ void Graphics_closePlayer();
 void Graphics_Close();
 void Graphics_loadGraphicsPlayers();
 void Graphics_loadGraphicsTiles();
+void Graphics_DisplayMenu();
 
 #endif
