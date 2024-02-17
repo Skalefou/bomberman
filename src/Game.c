@@ -8,13 +8,20 @@
 #include "Graphics.h"
 #include "Map.h"
 
+static Game game;
+
 void Game_RunGame() {
+    game.numberPlayer = 1;
+
     Graphics_Init();
     atexit(Graphics_Close);
     Map_Init();
     atexit(Map_Close);
 
     Map_OpenMap(0);
+    SDL_Rect position = {2,2}; // temp
+    Player_Init(1, &position);
+    atexit(Player_Close);
 
 
     int active = 1;
@@ -37,6 +44,7 @@ void Game_RunGame() {
 
         Graphics_ClearScreen();
         Map_DisplayMap();
+        Player_Display();
         Graphics_RefreshScreen();
     }
 }

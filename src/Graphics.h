@@ -39,6 +39,7 @@ void Graphics_Init();
 void Graphics_ClearScreen();
 void Graphics_RefreshScreen();
 void Graphics_DisplayTile(int idTile, SDL_Rect position);
+void Graphics_DisplayPlayer(int player, int idTexturePlayer, SDL_Rect position);
 void Graphics_SetZoomAllTexture(double coefZoomW, double coefZoomH);
 SDL_Rect Graphics_GetSizeTile(int idTile);
 double Graphics_GetCoefZoomW();

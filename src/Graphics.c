@@ -134,7 +134,7 @@ void Graphics_Init() {
         exit(EXIT_FAILURE);
     }
     Graphics_SetZoomAllTexture(ZOOM_TEXTURE_ORIGINAL, ZOOM_TEXTURE_ORIGINAL);
-    //Graphics_loadGraphicsPlayers();
+    Graphics_loadGraphicsPlayers();
     Graphics_loadGraphicsTiles();
 }
 
@@ -147,6 +147,10 @@ void Graphics_DisplayTile(int idTile, SDL_Rect position) {
     position.h = (int)(graphics.coefZoomH * graphics.tiles.size[idTile].h);
 
     SDL_RenderCopy(graphics.renderer, graphics.tiles.texture[idTile], NULL, &position);
+}
+
+void Graphics_DisplayPlayer(int player, int idTexturePlayer, SDL_Rect position) {
+
 }
 
 SDL_Rect Graphics_GetSizeTile(int idTile) {
@@ -174,11 +178,10 @@ void Graphics_closePlayer() {
         }
         free(graphics.player[i].texture);
     }
-    free(graphics.player);
 }
 
 void Graphics_Close() {
-    //Graphics_closePlayer();
+    Graphics_closePlayer();
     free(graphics.tiles.size);
     for(int i = 0; i < NUMBER_TILES; i++) {
         SDL_DestroyTexture(graphics.tiles.texture[i]);
