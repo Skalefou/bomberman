@@ -12,9 +12,16 @@
 #include <string.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "const.h"
 #include "Utils.h"
+
+typedef struct {
+    TTF_Font *font;
+    SDL_Texture **texture;
+    int lineUsed;
+} DebugGraphics;
 
 typedef struct {
     SDL_Texture **texture;
@@ -28,6 +35,7 @@ typedef struct {
     SDL_Renderer *renderer; // Utilisez SDL_Renderer pour le rendu
     Texture *player;
     Texture tiles;
+    DebugGraphics debugGraphics;
     double coefZoomW, coefZoomH;
 } Graphics;
 

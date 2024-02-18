@@ -135,6 +135,9 @@ void Graphics_Init() {
         SDL_Quit();
         exit(EXIT_FAILURE);
     }
+    TTF_Init();
+    graphics.debugGraphics.texture = malloc(sizeof(SDL_Texture*) * DEBUG_LINE);
+    graphics.debugGraphics.lineUsed = 0;
     Graphics_SetZoomAllTexture(ZOOM_TEXTURE_ORIGINAL, ZOOM_TEXTURE_ORIGINAL);
     Graphics_loadGraphicsPlayers();
     Graphics_loadGraphicsTiles();
@@ -191,6 +194,11 @@ void Graphics_Close() {
     }
 
     free(graphics.tiles.texture);
+    for(int i = 0; i < graphics.debugGraphics.lineUsed; i++) {
+        SDL_DestroyTexture(graphics.debugGraphics.texture[i]);
+    }
+    free(graphics.debugGraphics.texture);
+    TTF_Quit();
     SDL_DestroyRenderer(graphics.renderer);
     SDL_DestroyWindow(graphics.window);
     SDL_Quit();

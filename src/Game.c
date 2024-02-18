@@ -7,8 +7,11 @@
 #include "Game.h"
 #include "Graphics.h"
 #include "Map.h"
+#include "Network.h"
 
 static Game game;
+
+extern int port;
 
 void Game_RunGame() {
     game.numberPlayer = 1;
@@ -17,6 +20,13 @@ void Game_RunGame() {
     atexit(Graphics_Close);
     Map_Init();
     atexit(Map_Close);
+
+    Network_Init(port);
+    atexit(Network_Close);
+
+    if (Network_GetMode() == NETWORK_CLIENT) {
+        Network_ClientPrepareConnection("127.0.0.1", DEFAULT_PORT_HOST);
+    }
 
     Map_OpenMap(0);
     SDL_Rect position = {2,2}; // temp
@@ -41,6 +51,13 @@ void Game_RunGame() {
                 break;
             default : break;
         }
+
+        if(Network_GetMode() == NETWORK_HOST) {
+            Network_ServerWaitingConnection();
+        } else {
+            Network_ClientSendRequest();
+        }
+
 
         Graphics_ClearScreen();
         Map_DisplayMap();

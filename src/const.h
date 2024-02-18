@@ -1,6 +1,8 @@
 #ifndef BOMBERMAN_CONST_H
 #define BOMBERMAN_CONST_H
 
+// Graphics const
+
 enum {
     PLAYER_DOWN,
     PLAYER_WALK_DOWN_1,
@@ -30,8 +32,6 @@ enum {
     TILE_AIR
 };
 
-// Graphics const
-
 #define ZOOM_TEXTURE_ORIGINAL 3
 #define SIZE_TEXTURE_TILE_ORIGINAL_PIXEL 16
 #define MAP_SIZE_BASE_X 11
@@ -41,7 +41,7 @@ enum {
 #define NUMBER_TEXTURE_PER_PLAYER 18
 #define TEXTURE_PATH "media/texture/"
 #define NUMBER_TILES 5
-
+#define DEBUG_LINE 10
 
 // Map const
 
@@ -52,5 +52,12 @@ enum {
 // Game const
 
 #define NUMBER_MAX_PLAYER 1
+
+// Network const
+
+enum {NETWORK_HOST, NETWORK_CLIENT};
+#define DEFAULT_PORT_HOST 45101
+#define LIMIT_TEST_PORT 30
+#define MAX_LEN_PACKET 8192
 
 #endif
