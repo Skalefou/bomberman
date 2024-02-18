@@ -12,12 +12,13 @@ void Graphics_loadGraphicsPlayers() {
     SDL_Surface *surface;
     FILE *file = fopen("media/playerTexture.txt", "r");
 
-    graphics.player = malloc(sizeof(Texture*) * NUMBER_MAX_PLAYER);
+    graphics.player = malloc(sizeof(Texture) * NUMBER_MAX_PLAYER);
 
     if (file != NULL) {
         char line[256];
         for (int i = 0; i < NUMBER_MAX_PLAYER; i++){
             graphics.player[i].texture = malloc(sizeof(SDL_Texture*) * NUMBER_TEXTURE_PER_PLAYER);
+            graphics.player[i].size = malloc(sizeof(SDL_Rect) * NUMBER_TEXTURE_PER_PLAYER);
             graphics.player[i].numberOfTexture = NUMBER_TEXTURE_PER_PLAYER;
             for (int y = 0; y < NUMBER_TEXTURE_PER_PLAYER; y++) {
                 if (fgets(line, sizeof(line), file) == NULL) {
@@ -38,9 +39,10 @@ void Graphics_loadGraphicsPlayers() {
                     fprintf(stderr, "%s\n", IMG_GetError());
                 }
                 SDL_FreeSurface(surface);
+                SDL_QueryTexture(graphics.player[i].texture[y], NULL, NULL, &graphics.player[i].size[y].w, &graphics.player[i].size[y].h);
             }
-            fclose(file);
         }
+        fclose(file);
     } else {
         fprintf(stderr, "Error opening \"media/playerTexture.txt\"\n");
         exit(EXIT_FAILURE);
@@ -176,6 +178,7 @@ void Graphics_closePlayer() {
         for(int y = 0; y < NUMBER_TEXTURE_PER_PLAYER; y++) {
             SDL_DestroyTexture(graphics.player[i].texture[y]);
         }
+        free(graphics.player[i].size);
         free(graphics.player[i].texture);
     }
 }
@@ -185,7 +188,6 @@ void Graphics_Close() {
     free(graphics.tiles.size);
     for(int i = 0; i < NUMBER_TILES; i++) {
         SDL_DestroyTexture(graphics.tiles.texture[i]);
-
     }
 
     free(graphics.tiles.texture);
