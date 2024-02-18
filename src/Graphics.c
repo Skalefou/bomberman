@@ -47,6 +47,9 @@ void Graphics_loadGraphicsPlayers() {
     }
 }
 
+
+extern int mode = 0;
+
 void Graphics_DisplayMenu() {
     // Charger l'image à partir d'un fichier
     SDL_Surface *menuSurface = IMG_Load("media/menu/menu.png");
@@ -65,23 +68,19 @@ void Graphics_DisplayMenu() {
 
     SDL_FreeSurface(menuSurface);
 
+    // Obtenir la taille actuelle de la fenêtre
+    int winWidth, winHeight;
+    SDL_GetWindowSize(graphics.window, &winWidth, &winHeight);
+
+    // Créer un rectangle de destination pour la texture du menu
+    SDL_Rect destRect;
+    destRect.x = 0;
+    destRect.y = 0;
+    destRect.w = winWidth;
+    destRect.h = winHeight;
+
     // Rendre la texture à l'écran
     SDL_RenderCopy(graphics.renderer, menuTexture, NULL, NULL);
-
-    /* Charger la police de caractères
-    TTF_Font* font = TTF_OpenFont("media/menu/retro_gaming/Retrogaming.ttf", 14);
-    if (font == NULL) {
-        fprintf(stderr, "Erreur lors du chargement de la police : %s\n", TTF_GetError());
-        return;
-    }
-
-    // Obtenir la taille du texte
-    int textWidth, textHeight;
-    if (TTF_SizeText(font, "multijoueur", &textWidth, &textHeight) != 0) {
-        fprintf(stderr, "Erreur lors de la récupération de la taille du texte : %s\n", TTF_GetError());
-        TTF_CloseFont(font);
-        return;
-    }*/
 
     // Mettre à jour l'écran
     SDL_RenderPresent(graphics.renderer);
@@ -96,9 +95,22 @@ void Graphics_DisplayMenu() {
             int width, height;
             SDL_GetWindowSize(graphics.window, &width, &height);
 
+            int centerX = winWidth / 2;
+            int centerY = winHeight / 2;
 
-            if ((x << 1) > (width - 370) && (x << 1) < (height + 111) && (y << 1) > (height - 111) &&
-                (y << 1) < (width + 370)) {
+            int intervalX = winWidth * 0.03;
+            int intervalY = winHeight * 0.03;
+
+            intervalX += 75;
+            intervalY += 75;
+            if (x > centerX - intervalX && x < centerX + intervalX && y > centerY - intervalY && y < centerY + intervalY) {
+                // Mode solo
+                break;
+            }
+            intervalX += 75;
+            intervalY += 75;
+            if (x > centerX - intervalX && x < centerX + intervalX && y > centerY - intervalY && y < centerY + intervalY) {
+                mode = 2;
                 break;
             }
         }
@@ -108,7 +120,85 @@ void Graphics_DisplayMenu() {
     }
 }
 
+void Graphics_Menu_Multi_Display(){
+    // Charger l'image à partir d'un fichier
+    SDL_Surface *menuSurface = IMG_Load("media/menu/menuMulti.png");
+    if (menuSurface == NULL) {
+        fprintf(stderr, "Erreur lors du chargement de l'image du menu : %s\n", IMG_GetError());
+        return;
+    }
 
+    // Créer une texture à partir de l'image
+    SDL_Texture *menuTexture = SDL_CreateTextureFromSurface(graphics.renderer, menuSurface);
+    if (menuTexture == NULL) {
+        fprintf(stderr, "Erreur lors de la création de la texture du menu : %s\n", SDL_GetError());
+        SDL_FreeSurface(menuSurface);
+        return;
+    }
+
+    SDL_FreeSurface(menuSurface);
+
+    // Obtenir la taille actuelle de la fenêtre
+    int winWidth, winHeight;
+    SDL_GetWindowSize(graphics.window, &winWidth, &winHeight);
+
+    // Créer un rectangle de destination pour la texture du menu
+    SDL_Rect destRect;
+    destRect.x = 0;
+    destRect.y = 0;
+    destRect.w = winWidth;
+    destRect.h = winHeight;
+
+    // Rendre la texture à l'écran
+    SDL_RenderCopy(graphics.renderer, menuTexture, NULL, &destRect);
+
+    // Mettre à jour l'écran
+    SDL_RenderPresent(graphics.renderer);
+
+    // Libérer la texture car nous n'en avons plus besoin
+    SDL_DestroyTexture(menuTexture);
+
+    SDL_Event event;
+    while (1) {
+        SDL_WaitEvent(&event);
+        if (event.type == SDL_MOUSEBUTTONDOWN) {
+            int x = event.button.x;
+            int y = event.button.y;
+            int width, height;
+            SDL_GetWindowSize(graphics.window, &width, &height);
+
+            int centerX = winWidth / 10;
+            int centerY = winHeight / 1.5;
+
+            int intervalX = winWidth * 0.03;
+            int intervalY = winHeight * 0.03;
+
+            if (x > centerX - intervalX && x < centerX + intervalX && y > centerY - intervalY && y < centerY + intervalY) {
+                //host
+                mode = 4;
+                printf("join\n");
+                break;
+            }
+            intervalX += 75;
+            intervalY += 25;
+            if (x > centerX - intervalX && x < centerX + intervalX && y > centerY - intervalY && y < centerY + intervalY) {
+                //join
+                mode = 3;
+                printf("host\n");
+                break;
+            }
+        }
+
+        // Libérer la texture car nous n'en avons plus besoin
+        SDL_DestroyTexture(menuTexture);
+    }
+}
+
+void Graphics_SetFullScreen() {
+    if (SDL_SetWindowFullscreen(graphics.window, SDL_WINDOW_FULLSCREEN) < 0) {
+        fprintf(stderr, "Erreur lors du passage en plein écran : %s\n", SDL_GetError());
+    }
+}
 
 void Graphics_loadGraphicsTiles() {
     SDL_Surface *surface;

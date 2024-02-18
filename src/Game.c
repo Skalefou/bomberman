@@ -7,16 +7,18 @@
 #include "Game.h"
 #include "Graphics.h"
 #include "Map.h"
+#include "Menu.h"
+#include <SDL2/SDL_ttf.h>
 
 void Game_RunGame() {
     Graphics_Init();
+    Graphics_SetFullScreen();
     atexit(Graphics_Close);
-    Graphics_DisplayMenu();
+    Menu_DisplayMenu();
     Map_Init();
     atexit(Map_Close);
 
     Map_OpenMap(0);
-
 
     int active = 1;
     SDL_Event event;

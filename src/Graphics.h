@@ -50,5 +50,7 @@ void Graphics_Close();
 void Graphics_loadGraphicsPlayers();
 void Graphics_loadGraphicsTiles();
 void Graphics_DisplayMenu();
+void Graphics_SetFullScreen();
+void Graphics_Menu_Multi_Display();
 
 #endif
