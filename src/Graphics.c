@@ -176,7 +176,6 @@ void Graphics_Menu_Multi_Display(){
             if (x > centerX - intervalX && x < centerX + intervalX && y > centerY - intervalY && y < centerY + intervalY) {
                 //host
                 mode = 4;
-                printf("join\n");
                 break;
             }
             intervalX += 75;
@@ -184,7 +183,6 @@ void Graphics_Menu_Multi_Display(){
             if (x > centerX - intervalX && x < centerX + intervalX && y > centerY - intervalY && y < centerY + intervalY) {
                 //join
                 mode = 3;
-                printf("host\n");
                 break;
             }
         }

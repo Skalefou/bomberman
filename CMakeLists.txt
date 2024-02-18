@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.26)
 project(bomberman_SDL2_2 C)
 
 set(CMAKE_C_STANDARD 11)
@@ -23,8 +23,10 @@ add_executable(bomberman_SDL2_2
         src/Map.h
         src/Utils.h
         src/Player.c
-        src/Player.h)
+        src/Player.h
+        src/Menu.c
+        src/Menu.h)
 
 # Spécifiez les bibliothèques SDL2 à lier
 target_link_directories(bomberman_SDL2_2 PRIVATE ${SDL2_LIBRARY_DIR})
-target_link_libraries(bomberman_SDL2_2 PRIVATE mingw32 SDL2main SDL2 SDL2_image)
+target_link_libraries(bomberman_SDL2_2 PRIVATE mingw32 SDL2main SDL2 SDL2_image SDL2_ttf)
