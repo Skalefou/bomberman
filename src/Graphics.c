@@ -113,6 +113,9 @@ void Graphics_DisplayMenu() {
                 mode = 2;
                 break;
             }
+            if (x > 1125 && x < 1167 && y > 20 && y < 67 ){
+                break;
+            }
         }
 
         // Libérer la texture car nous n'en avons plus besoin
@@ -174,18 +177,68 @@ void Graphics_Menu_Multi_Display(){
             int intervalY = winHeight * 0.03;
 
             if (x > centerX - intervalX && x < centerX + intervalX && y > centerY - intervalY && y < centerY + intervalY) {
-                //host
-                mode = 4;
+                //join
+                mode = 3;
+                printf("join\n");
                 break;
             }
             intervalX += 75;
             intervalY += 25;
             if (x > centerX - intervalX && x < centerX + intervalX && y > centerY - intervalY && y < centerY + intervalY) {
-                //join
-                mode = 3;
+                //host
+                mode = 4;
+                printf("host\n");
                 break;
             }
         }
+
+        // Libérer la texture car nous n'en avons plus besoin
+        SDL_DestroyTexture(menuTexture);
+    }
+}
+
+void Multiplayer_Join(){
+    // Charger l'image à partir d'un fichier
+    SDL_Surface *menuSurface = IMG_Load("media/menu/join.png");
+    if (menuSurface == NULL) {
+        fprintf(stderr, "Erreur lors du chargement de l'image du menu : %s\n", IMG_GetError());
+        return;
+    }
+
+    // Créer une texture à partir de l'image
+    SDL_Texture *menuTexture = SDL_CreateTextureFromSurface(graphics.renderer, menuSurface);
+    if (menuTexture == NULL) {
+        fprintf(stderr, "Erreur lors de la création de la texture du menu : %s\n", SDL_GetError());
+        SDL_FreeSurface(menuSurface);
+        return;
+    }
+
+    SDL_FreeSurface(menuSurface);
+
+    // Obtenir la taille actuelle de la fenêtre
+    int winWidth, winHeight;
+    SDL_GetWindowSize(graphics.window, &winWidth, &winHeight);
+
+    // Créer un rectangle de destination pour la texture du menu
+    SDL_Rect destRect;
+    destRect.x = 0;
+    destRect.y = 0;
+    destRect.w = winWidth;
+    destRect.h = winHeight;
+
+    // Rendre la texture à l'écran
+    SDL_RenderCopy(graphics.renderer, menuTexture, NULL, &destRect);
+
+    // Mettre à jour l'écran
+    SDL_RenderPresent(graphics.renderer);
+
+    // Libérer la texture car nous n'en avons plus besoin
+    SDL_DestroyTexture(menuTexture);
+
+    SDL_Event event;
+    while (1) {
+        //SDL_WaitEvent(&event);
+        SDL_Delay(2000);
 
         // Libérer la texture car nous n'en avons plus besoin
         SDL_DestroyTexture(menuTexture);
@@ -198,6 +251,85 @@ void Graphics_SetFullScreen() {
     }
 }
 
+void Multiplayer_Lobby(){
+    // Charger l'image à partir d'un fichier
+    SDL_Surface *menuSurface = IMG_Load("media/menu/lobby.png");
+    if (menuSurface == NULL) {
+        fprintf(stderr, "Erreur lors du chargement de l'image du menu : %s\n", IMG_GetError());
+        return;
+    }
+
+    // Créer une texture à partir de l'image
+    SDL_Texture *menuTexture = SDL_CreateTextureFromSurface(graphics.renderer, menuSurface);
+    if (menuTexture == NULL) {
+        fprintf(stderr, "Erreur lors de la création de la texture du menu : %s\n", SDL_GetError());
+        SDL_FreeSurface(menuSurface);
+        return;
+    }
+
+    SDL_FreeSurface(menuSurface);
+
+    // Obtenir la taille actuelle de la fenêtre
+    int winWidth, winHeight;
+    SDL_GetWindowSize(graphics.window, &winWidth, &winHeight);
+
+    // Créer un rectangle de destination pour la texture du menu
+    SDL_Rect destRect;
+    destRect.x = 0;
+    destRect.y = 0;
+    destRect.w = winWidth;
+    destRect.h = winHeight;
+
+    // Rendre la texture à l'écran
+    SDL_RenderCopy(graphics.renderer, menuTexture, NULL, &destRect);
+
+    // Mettre à jour l'écran
+    SDL_RenderPresent(graphics.renderer);
+
+    // Libérer la texture car nous n'en avons plus besoin
+    SDL_DestroyTexture(menuTexture);
+
+    SDL_Event event;
+    while (1) {
+        SDL_WaitEvent(&event);
+        if (event.type == SDL_MOUSEBUTTONDOWN) {
+            int x = event.button.x;
+            int y = event.button.y;
+            int width, height;
+            SDL_GetWindowSize(graphics.window, &width, &height);
+
+            int centerX = winWidth / 10;
+            int centerY = winHeight / 1.5;
+
+            int intervalX = winWidth * 0.03;
+            int intervalY = winHeight * 0.03;
+
+            if (x > centerX - intervalX && x < centerX + intervalX && y > centerY - intervalY && y < centerY + intervalY) {
+                //fonction de modification de texte d'affichage de l'adresse ip
+                break;
+            }
+        }
+
+        // Libérer la texture car nous n'en avons plus besoin
+        SDL_DestroyTexture(menuTexture);
+    }
+}
+/*
+void DisplayIP() {
+
+    int x = 256, y = 21, w = 342, h = 72;
+    TTF_Font* font = TTF_OpenFont("media/font.ttf", 24);
+    if (!font) {
+        printf("Erreur lors du chargement de la police : %s\n", TTF_GetError());
+        return;
+    }
+    SDL_Color color = {0, 0, 0}; // Couleur du texte (blanc ici)
+    SDL_Surface* surface = TTF_RenderText_Blended(font, "text", color);
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(graphics.renderer, surface);
+    SDL_Rect dstRect;
+    SDL_QueryTexture(texture, NULL, NULL, &dstRect.w, &dstRect.h);
+}
+*/
 void Graphics_loadGraphicsTiles() {
     SDL_Surface *surface;
     FILE *file = fopen("media/tilesTexture.txt", "r");

@@ -52,5 +52,9 @@ void Graphics_loadGraphicsTiles();
 void Graphics_DisplayMenu();
 void Graphics_SetFullScreen();
 void Graphics_Menu_Multi_Display();
+void Multiplayer_Lobby();
+void DisplayIP();
+void Multiplayer_Join();
+
 
 #endif
