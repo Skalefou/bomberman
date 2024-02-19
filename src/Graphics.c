@@ -182,8 +182,9 @@ void Graphics_Menu_Multi_Display(){
                 printf("join\n");
                 break;
             }
+
             intervalX += 75;
-            intervalY += 25;
+            intervalY += 75;
             if (x > centerX - intervalX && x < centerX + intervalX && y > centerY - intervalY && y < centerY + intervalY) {
                 //host
                 mode = 4;
@@ -305,7 +306,7 @@ void Multiplayer_Lobby(){
             int intervalY = winHeight * 0.03;
 
             if (x > centerX - intervalX && x < centerX + intervalX && y > centerY - intervalY && y < centerY + intervalY) {
-                //fonction de modification de texte d'affichage de l'adresse ip
+                //DisplayIP();
                 break;
             }
         }
@@ -314,22 +315,23 @@ void Multiplayer_Lobby(){
         SDL_DestroyTexture(menuTexture);
     }
 }
-/*
+
 void DisplayIP() {
 
-    int x = 256, y = 21, w = 342, h = 72;
+    int x = 369, y = 600, w = 212, h = 47;
     TTF_Font* font = TTF_OpenFont("media/font.ttf", 24);
     if (!font) {
         printf("Erreur lors du chargement de la police : %s\n", TTF_GetError());
         return;
     }
-    SDL_Color color = {0, 0, 0}; // Couleur du texte (blanc ici)
+    SDL_Color color = {0, 0, 0}; // Couleur du texte (noir ici)
     SDL_Surface* surface = TTF_RenderText_Blended(font, "text", color);
     SDL_Texture *texture = SDL_CreateTextureFromSurface(graphics.renderer, surface);
     SDL_Rect dstRect;
     SDL_QueryTexture(texture, NULL, NULL, &dstRect.w, &dstRect.h);
 }
-*/
+
+
 void Graphics_loadGraphicsTiles() {
     SDL_Surface *surface;
     FILE *file = fopen("media/tilesTexture.txt", "r");

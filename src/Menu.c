@@ -9,11 +9,9 @@ void Menu_DisplayMenu(){
     }
     if(mode == 3){
         Display_JoinMenu();
-        printf("Display_JoinMenu\n");
     }
     if(mode == 4){
         Display_Lobby();
-        printf("Display_Lobby\n");
     }
 }
 
@@ -23,10 +21,9 @@ void Multiplayer_DisplayMenu(){
 
 void Display_Lobby(){
     Multiplayer_Lobby();
-    //TTF_Init();
+    TTF_Init();
     //const char* text = "Your text here";
-    //DisplayIP();
-    printf("Display_Lobby\n");
+    DisplayIP();
 }
 
 void Display_JoinMenu(){
