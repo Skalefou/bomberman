@@ -6,11 +6,12 @@ void Menu_DisplayMenu(){
     Graphics_DisplayMenu();
     if(mode == 2){
         Multiplayer_DisplayMenu();
-        printf("Multiplayer_DisplayMenu\n");
-    }else if(mode == 3){
+    }
+    if(mode == 3){
         Display_JoinMenu();
         printf("Display_JoinMenu\n");
-    }else if(mode == 4){
+    }
+    if(mode == 4){
         Display_Lobby();
         printf("Display_Lobby\n");
     }
@@ -25,6 +26,7 @@ void Display_Lobby(){
     //TTF_Init();
     //const char* text = "Your text here";
     //DisplayIP();
+    printf("Display_Lobby\n");
 }
 
 void Display_JoinMenu(){
