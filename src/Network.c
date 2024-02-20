@@ -7,42 +7,48 @@ void Network_Init(int modeConnection) {
     network.mode = modeConnection;
 
     if (network.mode == NETWORK_HOST) {
-        // Ouvre un port et test s'il est valide
-        for (int i = 0; i < LIMIT_TEST_PORT; i++) {
-            network.socket = SDLNet_UDP_Open(DEFAULT_PORT_HOST + i);
-            if (network.socket) {
-                break;
-            }
-            fprintf(stderr, "Erreur ouverture socket : %s", SDLNet_GetError());
-        }
+        SDLNet_ResolveHost(&network.ip, NULL, DEFAULT_PORT_HOST);
+        network.socket = SDLNet_TCP_Open(&network.ip);
         if (!network.socket) {
-            return;
-        }
-    } else if (network.mode == NETWORK_CLIENT) {
-        network.socket = SDLNet_UDP_Open(0);
-        if (!network.socket) {
-            printf("Erreur lors de l'ouverture du socket : %s\n", SDLNet_GetError());
-            return;
+            fprintf(stderr, "SDLNet_TCP_Open: %s\n", SDLNet_GetError());
+            exit(EXIT_FAILURE);
         }
     }
-    network.packet = SDLNet_AllocPacket(MAX_LEN_PACKET);
 }
 
 void Network_ClientPrepareConnection(char *ip, Uint16 port) {
     SDLNet_ResolveHost(&network.ip, ip, port);
-    network.packet->address = network.ip;
-
-    char *message = "Connection établie";
-    memcpy(network.packet->data, message, strlen(message)+1);
 }
 
 void Network_ClientSendRequest() {
-    SDLNet_UDP_Send(network.socket, -1, network.packet);
+    if((network.socket = SDLNet_TCP_Open(&network.ip)) == NULL) {
+        fprintf(stderr, "Erreur SDLNet_TCP_Open : %s\n", SDLNet_GetError());
+    }
+}
+
+int Network_ProcessClient(void *data) {
+    char receivedBuffer[4096];
+    for(;;) {
+        int bytesReceived = SDLNet_TCP_Recv(network.clientPlayer, receivedBuffer, 4096);
+        if (bytesReceived <= 0) {
+            fprintf(stderr, "Erreur lors de la réception des données : %s\n", SDLNet_GetError());
+        } else {
+            fprintf(stderr, "%s\n", receivedBuffer);
+        }
+    }
+}
+
+void Network_ClientSendData(void *data, int size) {
+    if (SDLNet_TCP_Send(network.socket, (char *)data, size) <= 0) {
+        fprintf(stderr, "Erreur lors de l'envoi des données : %s\n", SDLNet_GetError());
+    }
 }
 
 void Network_ServerWaitingConnection() {
-    if (SDLNet_UDP_Recv(network.socket, network.packet)) {
-        printf("Client : %s\n", (char *)network.packet->data);
+    if((network.clientPlayer = SDLNet_TCP_Accept(network.socket)) != NULL) {
+        SDL_Thread *thread;
+        int threadData = 42;
+        thread = SDL_CreateThread(Network_ProcessClient, "client1", &threadData);
     }
 }
 
@@ -51,7 +57,6 @@ int Network_GetMode() {
 }
 
 void Network_Close() {
-    SDLNet_FreePacket(network.packet);
-    SDLNet_UDP_Close(network.socket);
+    SDLNet_TCP_Close(network.socket);
     SDLNet_Quit();
 }

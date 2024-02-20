@@ -26,6 +26,7 @@ void Game_RunGame() {
 
     if (Network_GetMode() == NETWORK_CLIENT) {
         Network_ClientPrepareConnection("127.0.0.1", DEFAULT_PORT_HOST);
+        Network_ClientSendRequest();
     }
 
     Map_OpenMap(0);
@@ -55,7 +56,8 @@ void Game_RunGame() {
         if(Network_GetMode() == NETWORK_HOST) {
             Network_ServerWaitingConnection();
         } else {
-            Network_ClientSendRequest();
+            const char *messageToSend = "0 faute";
+            Network_ClientSendData(messageToSend, (int)strlen(messageToSend));
         }
 
 

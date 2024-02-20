@@ -6,16 +6,19 @@
 #include "const.h"
 
 typedef struct {
-    UDPsocket socket;
-    UDPpacket *packet;
+    TCPsocket socket;
+//    UDPpacket *packet;
     IPaddress ip;
 
+    TCPsocket clientPlayer;
+    SDL_Thread *thread;
     int mode;
 } Network;
 
 void Network_Init(int modeConnection);
 void Network_ClientPrepareConnection(char *ip, Uint16 port);
-
+int Network_ProcessClient(void *data);
+void Network_ClientSendData(void *data, int size);
 void Network_ClientSendRequest();
 void Network_ServerWaitingConnection();
 int Network_GetMode();
