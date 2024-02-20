@@ -5,14 +5,16 @@
 
 #include "const.h"
 
+typedef unsigned char ClientPacket;
+
 typedef struct {
     TCPsocket socket;
 //    UDPpacket *packet;
     IPaddress ip;
 
-    TCPsocket clientPlayer;
-    SDL_Thread *thread;
-    int mode;
+    TCPsocket client[SERVEUR_NUMBER_SOCKET];
+    SDL_Thread *thread[SERVEUR_NUMBER_SOCKET];
+    int mode, threadContinue, state;
 } Network;
 
 void Network_Init(int modeConnection);
@@ -20,6 +22,8 @@ void Network_ClientPrepareConnection(char *ip, Uint16 port);
 int Network_ProcessClient(void *data);
 void Network_ClientSendData(void *data, int size);
 void Network_ClientSendRequest();
+int Network_GetState();
+void Network_SetState(int state);
 void Network_ServerWaitingConnection();
 int Network_GetMode();
 void Network_Close();

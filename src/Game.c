@@ -34,6 +34,9 @@ void Game_RunGame() {
     Player_Init(1, &position);
     atexit(Player_Close);
 
+    // Temp
+    char action =
+
 
     int active = 1;
     SDL_Event event;
@@ -50,14 +53,28 @@ void Game_RunGame() {
                                                                              Map_GetSize()); break;
                 }
                 break;
+            case SDL_KEYDOWN:
+                switch (event.key.keysym.sym) {
+                    case SDLK_ESCAPE:
+                        Network_SetState(PLAY_NETWORK);
+                }
+                break;
             default : break;
         }
 
-        if(Network_GetMode() == NETWORK_HOST) {
-            Network_ServerWaitingConnection();
-        } else {
-            const char *messageToSend = "0 faute";
-            Network_ClientSendData(messageToSend, (int)strlen(messageToSend));
+        if (Network_GetState() == PENDING_NETWORK) {
+            if(Network_GetMode() == NETWORK_HOST) {
+                Network_ServerWaitingConnection();
+            } else {
+                Network_ClientPrepareConnection("127.0.0.1", DEFAULT_PORT_HOST);
+                Network_ClientSendRequest();
+
+            }
+        } else if (Network_GetState() == PLAY_NETWORK) {
+            if (Network_GetMode() == NETWORK_CLIENT) {
+                char *messageToSend = "0 faute";
+                Network_ClientSendData(messageToSend, (int)strlen(messageToSend));
+            }
         }
 
 
