@@ -24,6 +24,7 @@ typedef struct {
     int size_x, size_y;
 } Map;
 
+void Map_Modify();
 int Map_OpenMap(const int id);
 void Map_addListNameMap(char *name);
 void Map_Init();

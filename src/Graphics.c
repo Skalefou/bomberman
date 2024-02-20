@@ -138,16 +138,28 @@ void Graphics_Init() {
     Graphics_loadGraphicsTiles();
 }
 
+
+
+
+
+
 void Graphics_DisplayTile(int idTile, SDL_Rect position) {
     SDL_Surface *surface = IMG_Load("media/texture/explosion_1.png");
     if (surface == NULL) {
         fprintf(stderr, "%s\n", IMG_GetError());
     }
+
+    
     position.w = (int)(graphics.coefZoomW * graphics.tiles.size[idTile].w);
     position.h = (int)(graphics.coefZoomH * graphics.tiles.size[idTile].h);
 
     SDL_RenderCopy(graphics.renderer, graphics.tiles.texture[idTile], NULL, &position);
 }
+
+
+
+
+
 
 SDL_Rect Graphics_GetSizeTile(int idTile) {
     return graphics.tiles.size[idTile];

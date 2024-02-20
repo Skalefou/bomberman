@@ -1,8 +1,47 @@
 #include "Map.h"
 
-//TODO: Traduire tous les textes dans les chaines en anglais
-
 static Map map;
+
+void Map_Modify(){
+    int x, y;
+    int buttons = SDL_GetMouseState(&x, &y);
+    const double coefZoomW = Graphics_GetCoefZoomW(), coefZoomY = Graphics_GetCoefZoomH();
+    SDL_Rect sizeTile = Graphics_GetSizeTile(map.tileMap[0][0]);
+
+    /*printf("bouton : %d\n", buttons);
+    printf("position %d %d\n", x, y);
+    printf("Zoom : %lf %lf\n", coefZoomW, coefZoomY);
+    printf("Taille : %lf %lf\n", sizeTile.w * coefZoomW, sizeTile.h * coefZoomY);*/
+
+
+    // terrain_grid[((y - yoffset)//Y_SIZE)][((x - xoffset)//X_SIZE)] = cursor
+    int nx = x/(sizeTile.w * coefZoomW);
+    int ny = y/(sizeTile.h * coefZoomY);
+    printf("Transfo : %d %d\n", nx, ny);
+ 
+
+
+    // De base du 528 par 624
+    // map.size_x * sizeTile.w * coefZoomW   ;   map.size_y * sizeTile.h * coefZoomY
+    int width = map.size_x * sizeTile.w * coefZoomW;
+    int height = map.size_y * sizeTile.h * coefZoomY;
+
+    int col = map.size_x;
+    double x_size = sizeTile.w * coefZoomW;
+
+    printf("width %d\n", width);
+    printf("COL : %d\n", map.size_x);
+    printf("X_SIZE : %lf\n", sizeTile.w * coefZoomW);
+    int xoffset = (width - col*x_size)/2;
+    printf("offset %lf\n", xoffset);
+    // On crée un vecteur d'offset
+    //int xoffset = (WIDTH  -  COL*X_SIZE)>>1;
+    //int yoffset = (HEIGHT  -  LINE*Y_SIZE)>>1;
+
+    
+
+    map.tileMap[ny][nx] = 1;
+};
 
 int Map_OpenMap(const int id) {
     if (id >= map.numberListNameMap || id < 0) {
@@ -126,14 +165,15 @@ void Map_Init() {
 
 void Map_DisplayMap() {
     const double coefZoomW = Graphics_GetCoefZoomW(), coefZoomY = Graphics_GetCoefZoomH();
-    SDL_Rect sizeTile;
+    SDL_Rect sizeTile = Graphics_GetSizeTile(map.tileMap[0][0]);
+
     for(int y = 0; y < map.size_y; y++) {
         for(int x = 0; x < map.size_x; x++) {
             sizeTile = Graphics_GetSizeTile(map.tileMap[y][x]);
             SDL_Rect position = {(Sint16)(x * sizeTile.w * coefZoomW), (Sint16)(y * sizeTile.h * coefZoomY)};
             Graphics_DisplayTile(map.tileMap[y][x], position);
-        }
-    }
+        };
+    };
 };
 
 void Map_CloseMap() {

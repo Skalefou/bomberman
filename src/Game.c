@@ -24,7 +24,9 @@ void Game_RunGame() {
 
         switch(event.type) {
             case SDL_QUIT : active = 0; break;
-            case SDL_KEYUP : active = 0; break;
+            case SDL_MOUSEBUTTONDOWN :
+                Map_Modify();
+                break;
             case SDL_WINDOWEVENT:
                 switch(event.window.event) {
                     case SDL_WINDOWEVENT_SIZE_CHANGED: Graphics_ResizeWindow(event.window.data1,
