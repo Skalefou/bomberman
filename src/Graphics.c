@@ -151,8 +151,17 @@ void Graphics_DisplayTile(int idTile, SDL_Rect position) {
     SDL_RenderCopy(graphics.renderer, graphics.tiles.texture[idTile], NULL, &position);
 }
 
-void Graphics_DisplayPlayer(int player, int idTexturePlayer, SDL_Rect position) {
+SDL_Rect Graphics_GetTileSize(int idTile) {
+    SDL_Rect size;
+    size.w = (int)(graphics.coefZoomW * graphics.tiles.size[idTile].w);
+    size.h = (int)(graphics.coefZoomH * graphics.tiles.size[idTile].h);
+    return size;
+}
 
+void Graphics_DisplayPlayer(int player, int idTexturePlayer, SDL_Rect position) {
+    position.w = (int)(graphics.coefZoomW * graphics.player[player].size[idTexturePlayer].w);
+    position.h = (int)(graphics.coefZoomH * graphics.player[player].size[idTexturePlayer].h);
+    SDL_RenderCopy(graphics.renderer, graphics.player[player].texture[idTexturePlayer], NULL, &position);
 }
 
 SDL_Rect Graphics_GetSizeTile(int idTile) {

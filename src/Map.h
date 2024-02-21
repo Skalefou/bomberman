@@ -31,7 +31,8 @@ void Map_DisplayMap();
 SDL_Rect Map_GetSize();
 void Map_CloseMap();
 void Map_Close();
-
-
+int Map_GetIDTile(int x, int y);
+int Map_GetSizeMapX();
+int Map_GetSizeMapY();
 
 #endif

@@ -5,8 +5,6 @@
  */
 
 #include "Game.h"
-#include "Graphics.h"
-#include "Map.h"
 
 static Game game;
 
@@ -19,7 +17,7 @@ void Game_RunGame() {
     atexit(Map_Close);
 
     Map_OpenMap(0);
-    SDL_Rect position = {2,2}; // temp
+    SDL_Rect position = {1,1};
     Player_Init(1, &position);
     atexit(Player_Close);
 
@@ -27,20 +25,37 @@ void Game_RunGame() {
     int active = 1;
     SDL_Event event;
     while(active) {
-        SDL_WaitEvent(&event);
-
-        switch(event.type) {
-            case SDL_QUIT : active = 0; break;
-            case SDL_KEYUP : active = 0; break;
-            case SDL_WINDOWEVENT:
-                switch(event.window.event) {
-                    case SDL_WINDOWEVENT_SIZE_CHANGED: Graphics_ResizeWindow(event.window.data1,
-                                                                             event.window.data2,
-                                                                             Map_GetSize()); break;
+            while (SDL_PollEvent(&event)) {
+                switch(event.type) {
+                    case SDL_QUIT:
+                        active = 0;
+                        break;
+                    case SDL_KEYDOWN:
+                        printf("key pressed\n");
+                        switch(event.key.keysym.sym) {
+                            case SDLK_LEFT:
+                                Player_Move(0, -1, 0);
+                                printf("left\n");
+                                break;
+                            case SDLK_RIGHT:
+                                Player_Move(0, 1, 0);
+                                printf("right\n");
+                                break;
+                            case SDLK_UP:
+                                Player_Move(0, 0, -1);
+                                printf("up\n");
+                                break;
+                            case SDLK_DOWN:
+                                Player_Move(0, 0, 1);
+                                printf("down\n");
+                                break;
+                            case SDLK_SPACE:
+                                printf("space\n");
+                                break;
+                        }
+                        break;
                 }
-                break;
-            default : break;
-        }
+            }
 
         Graphics_ClearScreen();
         Map_DisplayMap();

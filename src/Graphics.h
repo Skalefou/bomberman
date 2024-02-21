@@ -49,5 +49,6 @@ void Graphics_closePlayer();
 void Graphics_Close();
 void Graphics_loadGraphicsPlayers();
 void Graphics_loadGraphicsTiles();
+SDL_Rect Graphics_GetTileSize(int idTile);
 
 #endif

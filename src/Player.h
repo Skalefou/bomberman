@@ -3,12 +3,18 @@
 
 #include <SDL2/SDL.h>
 #include "Graphics.h"
+#include "Map.h"
 #include "const.h"
+#include "Bomb.h"
 
 typedef struct {
     char *name;
     SDL_Rect position;
     int orientation;
+    int *bombe_max;
+    int *bombe_posee;
+    int bombe_speed;
+    int range;
 } Player;
 
 typedef struct {
@@ -19,5 +25,7 @@ typedef struct {
 void Player_Init(int numberPlayer, SDL_Rect *pos);
 void Player_Display();
 void Player_Close();
+//Players* Player_GetPlayers(void);
+void Player_Move(int player, int x, int y);
 
 #endif
