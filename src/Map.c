@@ -61,6 +61,18 @@ int Map_OpenMap(const int id) {
     return 0;
 }
 
+int Map_GetIDTile(int x, int y) {
+    return map.tileMap[y][x];
+}
+
+int Map_GetSizeMapX() {
+    return map.size_x;
+}
+
+int Map_GetSizeMapY() {
+    return map.size_y;
+}
+
 void Map_addListNameMap(char *name) {
     if (Utils_VerifyExtensionFile(name, ".map") == 1) {
         map.numberListNameMap++;

@@ -26,13 +26,47 @@ void Game_RunGame() {
     char clientAction = 45;
 
     Map_OpenMap(0);
-    SDL_Rect position = {2,2}; // temp
+    SDL_Rect position = {1,1};
     Player_Init(1, &position);
     atexit(Player_Close);
 
     int active = 1;
     SDL_Event event;
     while(active) {
+            while (SDL_PollEvent(&event)) {
+                switch(event.type) {
+                    case SDL_QUIT:
+                        active = 0;
+                        break;
+                    case SDL_KEYDOWN:
+                        printf("key pressed\n");
+                        switch(event.key.keysym.sym) {
+                            case SDLK_LEFT:
+                                Player_Move(0, -1, 0);
+                                printf("left\n");
+                                break;
+                            case SDLK_RIGHT:
+                                Player_Move(0, 1, 0);
+                                printf("right\n");
+                                break;
+                            case SDLK_UP:
+                                Player_Move(0, 0, -1);
+                                printf("up\n");
+                                break;
+                            case SDLK_DOWN:
+                                Player_Move(0, 0, 1);
+                                printf("down\n");
+                                break;
+                            case SDLK_SPACE:
+                                printf("space\n");
+                                break;
+                            case SDLK_a:
+                                Network_SetState(PLAY_NETWORK);
+                                break;
+                        }
+                        break;
+                }
+            }
         SDL_WaitEvent(&event);
 
         switch(event.type) {

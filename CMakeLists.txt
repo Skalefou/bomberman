@@ -24,9 +24,12 @@ add_executable(bomberman_SDL2_2
         src/Utils.h
         src/Player.h
         src/Player.c
+        src/Bomb.c
+        src/Bomb.h
         src/Network.c
         src/Network.h
         src/cJSON.c)
+)
 
 # Spécifiez les bibliothèques SDL2 à lier
 target_link_directories(bomberman_SDL2_2 PRIVATE ${SDL2_LIBRARY_DIR})

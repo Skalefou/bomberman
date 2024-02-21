@@ -9,11 +9,12 @@
 
 #include <stdlib.h>
 #include <SDL2/SDL.h>
-
+#include <stdbool.h>
 #include "const.h"
-
+#include "Map.h"
 #include "Graphics.h"
 #include "Player.h"
+#include "Bomb.h"
 
 typedef struct {
     int numberPlayer;
@@ -22,5 +23,6 @@ typedef struct {
 /* Fonction principale du jeu, elle débute par la construction des ressources utilisé par le jeu, leur utilisation pour
  * ensuite finir avec la libération de la mémoire */
 void Game_RunGame();
+
 
 #endif
