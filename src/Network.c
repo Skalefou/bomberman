@@ -2,11 +2,20 @@
 
 static Network network;
 
+void Network_EncryptJSON() {
+    cJSON_Delete(network.paquetSendServeur);
+    network.paquetSendServeur = cJSON_CreateObject();
+
+/*    int w = Map_GetSize().w, h = Map_GetSize().h;
+    cJSON *mapArray = cJSON_CreateArray();*/
+}
+
 void Network_Init(int modeConnection) {
     SDLNet_Init();
     network.threadContinue = 1;
     network.mode = modeConnection;
     network.state = PENDING_NETWORK;
+    network.paquetSendServeur = cJSON_CreateObject();
     for(int i = 0; i < SERVEUR_NUMBER_SOCKET; i++) {
         network.thread[i] = NULL;
         network.actionClientReceive[i] = CLIENT_ACTION_NONE;
@@ -87,6 +96,7 @@ void Network_Close() {
             SDL_DetachThread(network.thread[i]);
         }
     }
+    cJSON_Delete(network.paquetSendServeur);
     SDLNet_TCP_Close(network.socket);
     SDLNet_Quit();
 }

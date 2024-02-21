@@ -53,6 +53,7 @@ void Game_RunGame() {
             default : break;
         }
 
+        Network_EncryptJSON();
         if (Network_GetState() == PENDING_NETWORK) {
             if(Network_GetMode() == NETWORK_HOST) {
                 Network_ServerWaitingConnection();
