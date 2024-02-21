@@ -7,6 +7,17 @@
 #include "Graphics.h"
 
 static Graphics graphics;
+double win_x = WINDOW_WIDTH;
+double win_y = WINDOW_HEIGHT;
+
+double xoffset;
+double yoffset;
+
+short tile_number = 5;
+
+short GetTileNumber(){
+    return tile_number;
+};
 
 void Graphics_loadGraphicsPlayers() {
     SDL_Surface *surface;
@@ -104,18 +115,25 @@ void Graphics_Init() {
     if(SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         fprintf(stderr, "Error in SDL_Init : %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
-    }
+    };
     if (IMG_Init(IMG_INIT_PNG) == 0) {
         fprintf(stderr, "Error in IMG_Init : %s\n", IMG_GetError());
         exit(EXIT_FAILURE);
-    }
+    };
 
-    graphics.window = SDL_CreateWindow("Bomberman",
+    graphics.window = SDL_CreateWindow("Bomberman Editor",
                                        SDL_WINDOWPOS_UNDEFINED,
                                        SDL_WINDOWPOS_UNDEFINED,
                                        WINDOW_WIDTH,
                                        WINDOW_HEIGHT,
                                        SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+
+    SDL_Surface *icon = IMG_Load("media/texture/editor.png");
+    if (icon == NULL) {
+        fprintf(stderr, "%s\n", IMG_GetError());
+    };
+
+    SDL_SetWindowIcon(graphics.window, icon);
 
     SDL_SetWindowMinimumSize(graphics.window,
                              SIZE_TEXTURE_TILE_ORIGINAL_PIXEL*MAP_SIZE_BASE_X,
@@ -133,33 +151,64 @@ void Graphics_Init() {
         SDL_Quit();
         exit(EXIT_FAILURE);
     }
+
     Graphics_SetZoomAllTexture(ZOOM_TEXTURE_ORIGINAL, ZOOM_TEXTURE_ORIGINAL);
     //Graphics_loadGraphicsPlayers();
     Graphics_loadGraphicsTiles();
 }
 
+double Graphics_Get_Window_Size_H(){
+    return win_y;
+};
 
+double Graphics_Get_Window_Size_W(){
+    return win_x;
+};
 
-
-
-
-void Graphics_DisplayTile(int idTile, SDL_Rect position) {
+// Ici ca a changé
+void Graphics_DisplayTile(int idTile, SDL_Rect position, int mapx, int mapy) {
     SDL_Surface *surface = IMG_Load("media/texture/explosion_1.png");
     if (surface == NULL) {
         fprintf(stderr, "%s\n", IMG_GetError());
     }
-
-    
-    position.w = (int)(graphics.coefZoomW * graphics.tiles.size[idTile].w);
-    position.h = (int)(graphics.coefZoomH * graphics.tiles.size[idTile].h);
+    xoffset = (win_x/3 - (mapx*graphics.tiles.size[idTile].w)/2);
+    yoffset = (win_y - (mapy* graphics.coefZoomH * graphics.tiles.size[idTile].h))/2;
+    position.x += xoffset;
+    position.y += yoffset;
+    position.w = (graphics.coefZoomW * graphics.tiles.size[idTile].w);
+    position.h = (graphics.coefZoomH * graphics.tiles.size[idTile].h);
 
     SDL_RenderCopy(graphics.renderer, graphics.tiles.texture[idTile], NULL, &position);
-}
+};
 
+void Graphics_show_mouse(){
+    int x, y;
+    int buttons = SDL_GetMouseState(&x, &y);
 
+    SDL_Surface *pinceauSurface = IMG_Load("media/texture/pinceau.png");
+    if (pinceauSurface == NULL) {
+        fprintf(stderr, "Erreur lors du chargement de l'image du pinceau : %s\n", IMG_GetError());
+        return;
+    };
 
+    SDL_Texture *pinceauTexture = SDL_CreateTextureFromSurface(graphics.renderer, pinceauSurface);
+    if (pinceauTexture == NULL) {
+        fprintf(stderr, "Erreur lors de la création de la texture du pinceau : %s\n", SDL_GetError());
+        SDL_FreeSurface(pinceauSurface);
+        return;
+    };
 
+    SDL_FreeSurface(pinceauSurface);
 
+    // Créer un rectangle de destination pour la texture du pinceau
+    SDL_Rect destRect;
+    destRect.x = x;
+    destRect.y = y - 48;
+    destRect.w = 48;
+    destRect.h = 48;
+
+    SDL_RenderCopy(graphics.renderer, pinceauTexture, NULL, &destRect);
+};
 
 SDL_Rect Graphics_GetSizeTile(int idTile) {
     return graphics.tiles.size[idTile];
@@ -173,11 +222,17 @@ double Graphics_GetCoefZoomH() {
     return graphics.coefZoomH;
 }
 
+// Ici ca a changé
 void Graphics_ResizeWindow(int win_w, int win_h, SDL_Rect mapSize) {
     double width = (double)((double)win_w / (MAP_SIZE_BASE_X * SIZE_TEXTURE_TILE_ORIGINAL_PIXEL*ZOOM_TEXTURE_ORIGINAL))*ZOOM_TEXTURE_ORIGINAL;
     double height = (double)((double)win_h / (MAP_SIZE_BASE_Y * SIZE_TEXTURE_TILE_ORIGINAL_PIXEL*ZOOM_TEXTURE_ORIGINAL))*ZOOM_TEXTURE_ORIGINAL;
-    Graphics_SetZoomAllTexture(width, height);
-}
+    
+    win_x = win_w;
+    win_y = win_h;
+
+    double min = (width<height?width:height)*2/3;
+    Graphics_SetZoomAllTexture(min, min);
+};
 
 void Graphics_closePlayer() {
     for(int i = 0; i < NUMBER_MAX_PLAYER; i++) {
@@ -197,8 +252,111 @@ void Graphics_Close() {
 
     }
 
+    
+    SDL_DestroyTexture(graphics.background);
+
     free(graphics.tiles.texture);
     SDL_DestroyRenderer(graphics.renderer);
     SDL_DestroyWindow(graphics.window);
     SDL_Quit();
 }
+
+void Graphics_DisplayCell() {
+    SDL_Surface *IconSurface = IMG_Load("media/texture/icon.png");
+    if (IconSurface == NULL) {
+        fprintf(stderr, "Erreur lors du chargement de l'image du Icon : %s\n", IMG_GetError());
+        return;
+    };
+
+    SDL_Texture *IconTexture = SDL_CreateTextureFromSurface(graphics.renderer, IconSurface);
+    if (IconTexture == NULL) {
+        fprintf(stderr, "Erreur lors de la création de la texture du Icon : %s\n", SDL_GetError());
+        SDL_FreeSurface(IconSurface);
+        return;
+    };
+    
+    SDL_FreeSurface(IconSurface);
+
+    SDL_Surface *IconActive = IMG_Load("media/texture/icon_active.png");
+    if (IconActive == NULL) {
+        fprintf(stderr, "Erreur lors du chargement de l'image du Icon : %s\n", IMG_GetError());
+        return;
+    };
+
+    SDL_Texture *IconActiveTexture = SDL_CreateTextureFromSurface(graphics.renderer, IconActive);
+    if (IconTexture == NULL) {
+        fprintf(stderr, "Erreur lors de la création de la texture du Icon : %s\n", SDL_GetError());
+        SDL_FreeSurface(IconActive);
+        return;
+    };
+    
+    SDL_FreeSurface(IconActive);
+
+
+    
+    short template = 32;
+    short item = 16;
+    short x = MapGetX();
+    short y = MapGetY();
+
+    int xoffset = (win_x/3*2 - (x*graphics.tiles.size[0].w)/2);
+    int yoffset = (win_y - (y* graphics.coefZoomH * graphics.tiles.size[0].h))/2;
+
+    int h = (y* graphics.coefZoomH * graphics.tiles.size[0].h) / (tile_number+1);
+
+    int cursor_value = GetCursorValue();
+
+    for (short i = 0; i < tile_number; i++){
+
+        SDL_Rect destRect;
+        destRect.x = xoffset;
+        destRect.y = i * h + yoffset + 5*template/2;
+        destRect.w = graphics.coefZoomW * template;
+        destRect.h = graphics.coefZoomH * template;
+
+
+        SDL_RenderCopy(graphics.renderer, (i==cursor_value?IconActiveTexture:IconTexture), NULL, &destRect);
+
+        destRect.x = xoffset + 3*(template - item)/2;
+        destRect.y = i * h + template - item/2 + yoffset + 5*template/2;
+        destRect.w = graphics.coefZoomW * item;
+        destRect.h = graphics.coefZoomH * item;
+        SDL_RenderCopy(graphics.renderer, graphics.tiles.texture[i], NULL, &destRect);
+        
+    };
+};
+
+void Graphics_DisplayMenu() {
+    // Charger l'image à partir d'un fichier
+    SDL_Surface *menuSurface = IMG_Load("media/texture/background.png");
+    if (menuSurface == NULL) {
+        fprintf(stderr, "Erreur lors du chargement de l'image du menu : %s\n", IMG_GetError());
+        return;
+    };
+
+    // Créer une texture à partir de l'image
+    SDL_Texture *menuTexture = SDL_CreateTextureFromSurface(graphics.renderer, menuSurface);
+    if (menuTexture == NULL) {
+        fprintf(stderr, "Erreur lors de la création de la texture du menu : %s\n", SDL_GetError());
+        SDL_FreeSurface(menuSurface);
+        return;
+    };
+
+    SDL_FreeSurface(menuSurface);
+
+    // Obtenir la taille actuelle de la fenêtre
+    int winWidth, winHeight;
+    SDL_GetWindowSize(graphics.window, &winWidth, &winHeight);
+
+
+    // Créer un rectangle de destination pour la texture du menu
+    SDL_Rect destRect;
+    destRect.x = 0;
+    destRect.y = 0;
+    destRect.w = win_x>win_y?win_x:win_y*16/9;
+    destRect.h = win_x>win_y?win_x*9/16:win_y;
+
+
+    // Rendre la texture à l'écran
+    SDL_RenderCopy(graphics.renderer, menuTexture, NULL, &destRect);
+};

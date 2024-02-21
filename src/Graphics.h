@@ -26,8 +26,10 @@ typedef struct {
 typedef struct {
     SDL_Window *window; // Utilisez SDL_Window pour la fenêtre
     SDL_Renderer *renderer; // Utilisez SDL_Renderer pour le rendu
+    SDL_Cursor *cursor;
     Texture *player;
     Texture tiles;
+    SDL_Texture * background;
     double coefZoomW, coefZoomH;
 } Graphics;
 
@@ -36,9 +38,17 @@ void Graphics_Init();
 //Fonction fermant la SDL, la fenêtre et l'affichage vidéo
 
 //SDL_Surface* Graphics_resizeSurface(SDL_Surface *surface, int newWidth, int newHeight);
+
+short GetTileNumber();
+int GetCursorValue();
 void Graphics_ClearScreen();
 void Graphics_RefreshScreen();
-void Graphics_DisplayTile(int idTile, SDL_Rect position);
+void Graphics_DisplayMenu();
+void Graphics_DisplayCell();
+void Graphics_show_mouse();
+double Graphics_Get_Window_Size_H();
+double Graphics_Get_Window_Size_W();
+void Graphics_DisplayTile(int idTile, SDL_Rect position, int mapx, int mapy);
 void Graphics_SetZoomAllTexture(double coefZoomW, double coefZoomH);
 SDL_Rect Graphics_GetSizeTile(int idTile);
 double Graphics_GetCoefZoomW();

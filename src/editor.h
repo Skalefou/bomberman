@@ -12,11 +12,10 @@
 
 #include "const.h"
 
-#include "Graphics.h"
-#include "editor.h"
+#include "Map.h"
 
 /* Fonction principale du jeu, elle débute par la construction des ressources utilisé par le jeu, leur utilisation pour
  * ensuite finir avec la libération de la mémoire */
-void Game_RunGame();
+void saveMap();
 
 #endif

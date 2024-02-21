@@ -24,6 +24,14 @@ typedef struct {
     int size_x, size_y;
 } Map;
 
+int GetTileFromMap(short x, short y);
+
+void ADDCursorValue();
+void DECCursorValue();
+
+int MapGetX();
+int MapGetY();
+
 void Map_Modify();
 int Map_OpenMap(const int id);
 void Map_addListNameMap(char *name);

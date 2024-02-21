@@ -1,5 +1,10 @@
 {
     "files.associations": {
-        "map.h": "c"
+        "map.h": "c",
+        "dirent.h": "c",
+        "windows.h": "c",
+        "string.h": "c",
+        "stdio.h": "c",
+        "graphics.h": "c"
     }
 }

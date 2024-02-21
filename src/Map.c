@@ -2,45 +2,56 @@
 
 static Map map;
 
+int cursor_value;
+
+int GetTileFromMap(short x, short y){
+    return map.tileMap[y][x];
+};
+
+int GetCursorValue(){
+    return cursor_value;
+};
+
+void ADDCursorValue(){
+    cursor_value = (cursor_value+1)%GetTileNumber();
+};
+
+void DECCursorValue(){
+    cursor_value = (cursor_value-1+GetTileNumber())%GetTileNumber();
+};
+
 void Map_Modify(){
     int x, y;
     int buttons = SDL_GetMouseState(&x, &y);
     const double coefZoomW = Graphics_GetCoefZoomW(), coefZoomY = Graphics_GetCoefZoomH();
     SDL_Rect sizeTile = Graphics_GetSizeTile(map.tileMap[0][0]);
 
-    /*printf("bouton : %d\n", buttons);
-    printf("position %d %d\n", x, y);
-    printf("Zoom : %lf %lf\n", coefZoomW, coefZoomY);
-    printf("Taille : %lf %lf\n", sizeTile.w * coefZoomW, sizeTile.h * coefZoomY);*/
+    double win_x = Graphics_Get_Window_Size_W();
+    double win_y = Graphics_Get_Window_Size_H();
 
+    int xoffset = (win_x/3 - (map.size_x*sizeTile.w)/2);
+    int yoffset = (win_y - (map.size_y* coefZoomY * sizeTile.h))/2;
 
-    // terrain_grid[((y - yoffset)//Y_SIZE)][((x - xoffset)//X_SIZE)] = cursor
+    x -= xoffset;
+    y -= yoffset;
+
     int nx = x/(sizeTile.w * coefZoomW);
     int ny = y/(sizeTile.h * coefZoomY);
-    printf("Transfo : %d %d\n", nx, ny);
- 
 
-
-    // De base du 528 par 624
-    // map.size_x * sizeTile.w * coefZoomW   ;   map.size_y * sizeTile.h * coefZoomY
     int width = map.size_x * sizeTile.w * coefZoomW;
     int height = map.size_y * sizeTile.h * coefZoomY;
 
     int col = map.size_x;
     double x_size = sizeTile.w * coefZoomW;
 
-    printf("width %d\n", width);
-    printf("COL : %d\n", map.size_x);
-    printf("X_SIZE : %lf\n", sizeTile.w * coefZoomW);
-    int xoffset = (width - col*x_size)/2;
-    printf("offset %lf\n", xoffset);
-    // On crée un vecteur d'offset
-    //int xoffset = (WIDTH  -  COL*X_SIZE)>>1;
-    //int yoffset = (HEIGHT  -  LINE*Y_SIZE)>>1;
+    // Si on est en dehors des clous
+    if(ny < 0 || ny >= map.size_y || nx < 0 || nx >= map.size_x){
 
-    
-
-    map.tileMap[ny][nx] = 1;
+        // On considère l'appui sur un autre bouton
+    } else {
+        // Sinon on change la map
+        map.tileMap[ny][nx] = cursor_value;
+    };
 };
 
 int Map_OpenMap(const int id) {
@@ -124,7 +135,15 @@ void Map_addListNameMap(char *name) {
 SDL_Rect Map_GetSize() {
     SDL_Rect rect = {0, 0, map.size_x, map.size_y};
     return rect;
-}
+};
+
+int MapGetX(){
+    return map.size_x;
+};
+
+int MapGetY(){
+    return map.size_y;
+};
 
 void Map_Init() {
     map.numberListNameMap = 0;
@@ -171,7 +190,7 @@ void Map_DisplayMap() {
         for(int x = 0; x < map.size_x; x++) {
             sizeTile = Graphics_GetSizeTile(map.tileMap[y][x]);
             SDL_Rect position = {(Sint16)(x * sizeTile.w * coefZoomW), (Sint16)(y * sizeTile.h * coefZoomY)};
-            Graphics_DisplayTile(map.tileMap[y][x], position);
+            Graphics_DisplayTile(map.tileMap[y][x], position, map.size_x, map.size_y);
         };
     };
 };

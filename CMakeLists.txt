@@ -17,6 +17,8 @@ add_executable(bomberman_SDL2_2
         src/Map.c
         src/Graphics.c
         src/Utils.c
+        src/editor.c
+        src/editor.h
         src/const.h
         src/Game.h
         src/Graphics.h
