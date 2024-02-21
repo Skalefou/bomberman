@@ -25,8 +25,8 @@ void Network_ClientPrepareConnection(char *ip, Uint16 port) {
 }
 
 void Network_ClientSendRequest() {
-    if((network.socket = SDLNet_TCP_Open(&network.ip)) == NULL) {
-
+    if (network.socket == NULL) {
+        network.socket = SDLNet_TCP_Open(&network.ip);
     }
 }
 
@@ -47,16 +47,18 @@ int Network_ProcessClient(void *data) {
             int bytesReceived = SDLNet_TCP_Recv(network.client[index], receivedBuffer, MAX_LEN_PACKET_RECEIVE_SERVEUR);
             if (bytesReceived > 0) {
                 // Faire un traitement
-                int a;
+
             }
         }
         SDL_Delay(DELAY_REQUEST);
     }
 }
 
-void Network_ClientSendData(void *data, int size) {
-    if (SDLNet_TCP_Send(network.socket, (char *)data, size) <= 0) {
-        fprintf(stderr, "Erreur lors de l'envoi des données : %s\n", SDLNet_GetError());
+void Network_ClientSendData(char data) {
+    char dataSend[1];
+    dataSend[0] = data;
+    if (SDLNet_TCP_Send(network.socket, (char *)dataSend, sizeof(dataSend)) <= 0) {
+
     }
 }
 
@@ -64,8 +66,7 @@ void Network_ServerWaitingConnection() {
     for (int i = 0; i < SERVEUR_NUMBER_SOCKET; i++) {
         if (network.client[i] == NULL) {
             if ((network.client[i] = SDLNet_TCP_Accept(network.socket)) != NULL) {
-                // Rien que d'écrire ça me donne des maux de ventre
-                int* index = (int*)malloc(sizeof(int));
+                 int* index = (int*)malloc(sizeof(int));
                 *index = i;
                 network.thread[i] = SDL_CreateThread(Network_ProcessClient, "client", index);
             }

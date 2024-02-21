@@ -20,7 +20,7 @@ typedef struct {
 void Network_Init(int modeConnection);
 void Network_ClientPrepareConnection(char *ip, Uint16 port);
 int Network_ProcessClient(void *data);
-void Network_ClientSendData(void *data, int size);
+void Network_ClientSendData(char data);
 void Network_ClientSendRequest();
 int Network_GetState();
 void Network_SetState(int state);

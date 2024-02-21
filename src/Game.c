@@ -23,20 +23,12 @@ void Game_RunGame() {
 
     Network_Init(port);
     atexit(Network_Close);
-
-    if (Network_GetMode() == NETWORK_CLIENT) {
-        Network_ClientPrepareConnection("127.0.0.1", DEFAULT_PORT_HOST);
-        Network_ClientSendRequest();
-    }
+    char clientAction = 45;
 
     Map_OpenMap(0);
     SDL_Rect position = {2,2}; // temp
     Player_Init(1, &position);
     atexit(Player_Close);
-
-    // Temp
-    char action =
-
 
     int active = 1;
     SDL_Event event;
@@ -45,7 +37,6 @@ void Game_RunGame() {
 
         switch(event.type) {
             case SDL_QUIT : active = 0; break;
-            case SDL_KEYUP : active = 0; break;
             case SDL_WINDOWEVENT:
                 switch(event.window.event) {
                     case SDL_WINDOWEVENT_SIZE_CHANGED: Graphics_ResizeWindow(event.window.data1,
@@ -55,7 +46,7 @@ void Game_RunGame() {
                 break;
             case SDL_KEYDOWN:
                 switch (event.key.keysym.sym) {
-                    case SDLK_ESCAPE:
+                    case SDLK_SPACE:
                         Network_SetState(PLAY_NETWORK);
                 }
                 break;
@@ -72,8 +63,7 @@ void Game_RunGame() {
             }
         } else if (Network_GetState() == PLAY_NETWORK) {
             if (Network_GetMode() == NETWORK_CLIENT) {
-                char *messageToSend = "0 faute";
-                Network_ClientSendData(messageToSend, (int)strlen(messageToSend));
+                Network_ClientSendData(clientAction);
             }
         }
 
@@ -82,5 +72,6 @@ void Game_RunGame() {
         Map_DisplayMap();
         Player_Display();
         Graphics_RefreshScreen();
+        SDL_Delay(16);
     }
 }
