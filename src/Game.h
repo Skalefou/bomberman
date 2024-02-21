@@ -14,6 +14,7 @@
 #include "Map.h"
 #include "Graphics.h"
 #include "Player.h"
+#include "Bomb.h"
 
 typedef struct {
     int numberPlayer;

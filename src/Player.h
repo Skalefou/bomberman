@@ -5,7 +5,6 @@
 #include "Graphics.h"
 #include "Map.h"
 #include "const.h"
-#include "Bomb.h"
 
 typedef struct {
     char *name;
