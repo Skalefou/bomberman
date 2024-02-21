@@ -7,8 +7,10 @@ void Network_Init(int modeConnection) {
     network.threadContinue = 1;
     network.mode = modeConnection;
     network.state = PENDING_NETWORK;
-    for(int i = 0; i < SERVEUR_NUMBER_SOCKET; i++)
+    for(int i = 0; i < SERVEUR_NUMBER_SOCKET; i++) {
         network.thread[i] = NULL;
+        network.actionClientReceive[i] = CLIENT_ACTION_NONE;
+    }
 
     if (network.mode == NETWORK_HOST) {
         SDLNet_ResolveHost(&network.ip, NULL, DEFAULT_PORT_HOST);

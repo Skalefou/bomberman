@@ -5,15 +5,17 @@
 
 #include "const.h"
 
-typedef unsigned char ClientPacket;
+typedef struct {
+
+} ServeurPacket;
 
 typedef struct {
     TCPsocket socket;
-//    UDPpacket *packet;
     IPaddress ip;
 
     TCPsocket client[SERVEUR_NUMBER_SOCKET];
     SDL_Thread *thread[SERVEUR_NUMBER_SOCKET];
+    char actionClientReceive[3];
     int mode, threadContinue, state;
 } Network;
 
