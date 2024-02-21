@@ -3,6 +3,7 @@
 static Map map;
 
 int cursor_value;
+short tils[3] = {0, 1, 3};
 
 int GetTileFromMap(short x, short y){
     return map.tileMap[y][x];
@@ -50,7 +51,33 @@ void Map_Modify(){
         // On considère l'appui sur un autre bouton
     } else {
         // Sinon on change la map
-        map.tileMap[ny][nx] = cursor_value;
+        map.tileMap[ny][nx] = tils[cursor_value];
+        ny++;
+        printf("curseur %d\n", cursor_value);
+        switch (cursor_value){
+            case 0: case 2:
+                if((!(ny < 0 || ny >= map.size_y || nx < 0 || nx >= map.size_x)) && (map.tileMap[ny][nx] == 1)){
+                    map.tileMap[ny][nx] = 2;
+                };
+                break;
+            
+            case 1:
+                if((!(ny < 0 || ny >= map.size_y || nx < 0 || nx >= map.size_x)) && (map.tileMap[ny][nx] == 2)){
+                    map.tileMap[ny][nx] = 1;
+                };
+
+                
+                --ny;
+                if(!(ny-1 < 0 || ny-1 >= map.size_y || nx < 0 || nx >= map.size_x)){
+                    if(map.tileMap[ny-1][nx] == 0 || map.tileMap[ny-1][nx] == 3){
+                        map.tileMap[ny][nx] = 2;
+                    };
+                };
+                break;
+            
+            default:
+                break;
+        };
     };
 };
 

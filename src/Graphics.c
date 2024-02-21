@@ -13,7 +13,8 @@ double win_y = WINDOW_HEIGHT;
 double xoffset;
 double yoffset;
 
-short tile_number = 5;
+short til[3] = {0, 1, 3};
+short tile_number = 3;
 
 short GetTileNumber(){
     return tile_number;
@@ -167,10 +168,6 @@ double Graphics_Get_Window_Size_W(){
 
 // Ici ca a changé
 void Graphics_DisplayTile(int idTile, SDL_Rect position, int mapx, int mapy) {
-    SDL_Surface *surface = IMG_Load("media/texture/explosion_1.png");
-    if (surface == NULL) {
-        fprintf(stderr, "%s\n", IMG_GetError());
-    }
     xoffset = (win_x/3 - (mapx*graphics.tiles.size[idTile].w)/2);
     yoffset = (win_y - (mapy* graphics.coefZoomH * graphics.tiles.size[idTile].h))/2;
     position.x += xoffset;
@@ -208,6 +205,9 @@ void Graphics_show_mouse(){
     destRect.h = 48;
 
     SDL_RenderCopy(graphics.renderer, pinceauTexture, NULL, &destRect);
+
+    SDL_DestroyTexture(pinceauTexture);
+    
 };
 
 SDL_Rect Graphics_GetSizeTile(int idTile) {
@@ -314,16 +314,18 @@ void Graphics_DisplayCell() {
         destRect.w = graphics.coefZoomW * template;
         destRect.h = graphics.coefZoomH * template;
 
-
         SDL_RenderCopy(graphics.renderer, (i==cursor_value?IconActiveTexture:IconTexture), NULL, &destRect);
 
         destRect.x = xoffset + 3*(template - item)/2;
         destRect.y = i * h + template - item/2 + yoffset + 5*template/2;
         destRect.w = graphics.coefZoomW * item;
         destRect.h = graphics.coefZoomH * item;
-        SDL_RenderCopy(graphics.renderer, graphics.tiles.texture[i], NULL, &destRect);
+        SDL_RenderCopy(graphics.renderer, graphics.tiles.texture[til[i]], NULL, &destRect);
         
     };
+
+    SDL_DestroyTexture(IconActiveTexture);
+    SDL_DestroyTexture(IconTexture);
 };
 
 void Graphics_DisplayMenu() {
@@ -359,4 +361,6 @@ void Graphics_DisplayMenu() {
 
     // Rendre la texture à l'écran
     SDL_RenderCopy(graphics.renderer, menuTexture, NULL, &destRect);
+
+    SDL_DestroyTexture(menuTexture);
 };

@@ -53,9 +53,10 @@ void Game_RunGame() {
                 };
                 break;
 
-            case SDL_KEYBOARDEVENT :
-
-                saveMap();
+            case SDL_KEYDOWN:
+                if(event.key.keysym.sym == SDLK_s){
+                    saveMap();
+                };
                 break;
 
             default : break;

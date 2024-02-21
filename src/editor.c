@@ -3,36 +3,51 @@
 void saveMap() {
     printf("saving..\n");
 
-    int LINE = MapGetX();
-    int COL = MapGetY();
+    
+    int COL = MapGetX();
+    int LINE = MapGetY();
 
-    // Create a string for saving the characters
-    char save[LINE * COL * 2];  // Assuming a single digit per element
+    printf("dim %d %d\n", MapGetX(), MapGetY());
 
-    // Loop through the 2D array and concatenate values to the string
+    // Example terrain grid
+    int terrain_grid[10][10] = {
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+        {0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+        {0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+        {0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+        {0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+        {0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+        {0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+        {0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        // Add more rows as needed
+    };
+
+
+    char save[LINE * COL * 2];
+
     int index = 0;
     for (int i = 0; i < LINE; i++) {
         for (int j = 0; j < COL; j++) {
-            index += sprintf(save + index, "%d,", GetTileFromMap(j, i));
-        }
+            index += sprintf(save + index, "%d,", GetTileFromMap(j, i)); //GetTileFromMap(j, i));
+        };
         index += sprintf(save + index, "\n");
-    }
+    };
 
-    // Remove the trailing comma and newline character
+    printf("save :\n%s", save);
+
     save[index - 2] = '\0';
 
-    // Create and open the save file
     FILE *file = fopen("media/map/save.map", "w+");
     
     if (file != NULL) {
-        // Write the map to the file
         fprintf(file, "%s", save);
         
-        // Close the file
         fclose(file);
 
         printf("saved!\n");
     } else {
         printf("Error opening the file!\n");
-    }
-}
+    };
+};
