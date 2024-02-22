@@ -61,8 +61,11 @@ int Map_OpenMap(const int id) {
     return 0;
 }
 
+// C'est tellement beau le fait que le compilateur laisse passer ça que je le laisse - T
 int Map_GetIDTile(int x, int y) {
-    return map.tileMap[y][x];
+    return map.tileMap[y][x];int* Map_GetRow(int i) {
+        return map.tileMap[i];
+    }
 }
 
 int Map_GetSizeMapX() {
@@ -97,6 +100,10 @@ void Map_addListNameMap(char *name) {
 SDL_Rect Map_GetSize() {
     SDL_Rect rect = {0, 0, map.size_x, map.size_y};
     return rect;
+}
+
+int* Map_GetRow(int i) {
+    return map.tileMap[i];
 }
 
 void Map_Init() {

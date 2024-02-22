@@ -8,7 +8,7 @@ void Player_Init(int nbPlayer, SDL_Rect *pos) {
     players.numberPlayer = nbPlayer;
     players.player = malloc(sizeof(Player) * players.numberPlayer);
     for (int i = 0; i < players.numberPlayer; i++) {
-        players.player[i].name = NULL; // You should set this to the actual player name
+        players.player[i].name = NULL;
         players.player[i].position = pos[i];
         players.player[i].orientation = PLAYER_DOWN;
         players.player[i].range = 1;
@@ -75,6 +75,18 @@ void Player_Move(int player, int x, int y) {/*
     players.player[player].position.y += y;
 }
 
+SDL_Rect Player_GetPosition(int id) {
+    return players.player[id].position;
+}
+
+int Player_GetOrientation(int id) {
+    return players.player[id].orientation;
+}
+
+SDL_Rect Player_SetPosition(int id, int x, int y) {
+    players.player[id].position.x = x;
+    players.player[id].position.y = y;
+}
 
 void Player_Close() {
     for (int i = 0; i < players.numberPlayer; i++) {

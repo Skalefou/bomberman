@@ -5,6 +5,7 @@
 
 #include "const.h"
 #include "Map.h"
+#include "Player.h"
 #include "cJSON.h"
 
 typedef struct {
@@ -14,6 +15,7 @@ typedef struct {
     TCPsocket client[SERVEUR_NUMBER_SOCKET];
     SDL_Thread *thread[SERVEUR_NUMBER_SOCKET];
 
+    SDL_mutex *mutex;
     cJSON *paquetSendServeur;
     char actionClientReceive[3];
     int mode, threadContinue, state;
@@ -23,6 +25,8 @@ void Network_Init(int modeConnection);
 void Network_ClientPrepareConnection(char *ip, Uint16 port);
 int Network_ProcessClient(void *data);
 void Network_ClientSendData(char data);
+void Network_ClientReceiveData();
+void Network_DecryptJSON(char *jsonStr);
 void Network_EncryptJSON();
 void Network_ClientSendRequest();
 int Network_GetState();

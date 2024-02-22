@@ -26,68 +26,59 @@ void Game_RunGame() {
     char clientAction = 45;
 
     Map_OpenMap(0);
-    SDL_Rect position = {1,1};
-    Player_Init(1, &position);
-    atexit(Player_Close);
+    SDL_Rect position[2] = {{1,1}, {4,1}};
+
 
     int active = 1;
     SDL_Event event;
     while(active) {
-            while (SDL_PollEvent(&event)) {
-                switch(event.type) {
-                    case SDL_QUIT:
-                        active = 0;
-                        break;
+        Graphics_ClearScreen();
+        while (SDL_PollEvent(&event)) {
+            switch(event.type) {
+                case SDL_QUIT:
+                    active = 0;
+                    break;
                     case SDL_KEYDOWN:
-                        printf("key pressed\n");
                         switch(event.key.keysym.sym) {
                             case SDLK_LEFT:
-                                Player_Move(0, -1, 0);
-                                printf("left\n");
+                                if (Network_GetState() == PLAY_NETWORK) {
+
+                                    Player_Move(0, -1, 0);
+                                }
                                 break;
                             case SDLK_RIGHT:
-                                Player_Move(0, 1, 0);
-                                printf("right\n");
+                                if (Network_GetState() == PLAY_NETWORK) {
+                                    Player_Move(0, 1, 0);
+                                }
                                 break;
                             case SDLK_UP:
-                                Player_Move(0, 0, -1);
-                                printf("up\n");
+                                if (Network_GetState() == PLAY_NETWORK) {
+                                    Player_Move(0, 0, -1);
+                                }
                                 break;
                             case SDLK_DOWN:
-                                Player_Move(0, 0, 1);
-                                printf("down\n");
+                                if (Network_GetState() == PLAY_NETWORK) {
+                                    Player_Move(0, 0, 1);
+                                }
                                 break;
                             case SDLK_SPACE:
-                                printf("space\n");
+                                if (Network_GetState() == PLAY_NETWORK) {
+                                    printf("space\n");
+                                }
                                 break;
-                            case SDLK_a:
-                                Network_SetState(PLAY_NETWORK);
+                            case SDLK_c:
+                                if (Network_GetState() == PENDING_NETWORK) {
+                                    Player_Init(2, position);
+                                    atexit(Player_Close);
+                                    Network_SetState(PLAY_NETWORK);
+                                }
+
                                 break;
                         }
                         break;
                 }
             }
-        SDL_WaitEvent(&event);
 
-        switch(event.type) {
-            case SDL_QUIT : active = 0; break;
-            case SDL_WINDOWEVENT:
-                switch(event.window.event) {
-                    case SDL_WINDOWEVENT_SIZE_CHANGED: Graphics_ResizeWindow(event.window.data1,
-                                                                             event.window.data2,
-                                                                             Map_GetSize()); break;
-                }
-                break;
-            case SDL_KEYDOWN:
-                switch (event.key.keysym.sym) {
-                    case SDLK_SPACE:
-                        Network_SetState(PLAY_NETWORK);
-                }
-                break;
-            default : break;
-        }
-
-        Network_EncryptJSON();
         if (Network_GetState() == PENDING_NETWORK) {
             if(Network_GetMode() == NETWORK_HOST) {
                 Network_ServerWaitingConnection();
@@ -99,13 +90,21 @@ void Game_RunGame() {
         } else if (Network_GetState() == PLAY_NETWORK) {
             if (Network_GetMode() == NETWORK_CLIENT) {
                 Network_ClientSendData(clientAction);
+                Network_ClientReceiveData();
+            } else {
+                Network_EncryptJSON();
             }
         }
 
-
-        Graphics_ClearScreen();
         Map_DisplayMap();
-        Player_Display();
+        if (Network_GetState() == PLAY_NETWORK) {
+            Player_Display();
+        }
+
+        if (Network_GetState() == PENDING_NETWORK) {
+            int indexDebugGraphics = Network_GetMode() == NETWORK_HOST ? 0 : 1;
+            Graphics_DisplayDebugGraphics(indexDebugGraphics);
+        }
         Graphics_RefreshScreen();
         SDL_Delay(16);
     }

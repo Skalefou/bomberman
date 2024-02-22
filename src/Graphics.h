@@ -17,9 +17,11 @@
 #include "const.h"
 #include "Utils.h"
 
+// En relisant ça par la suite, je dois admettre que ça fait doublon avec la structure "Texture" juste en dessous - T
 typedef struct {
     TTF_Font *font;
     SDL_Texture **texture;
+    SDL_Rect *size;
     int lineUsed;
 } DebugGraphics;
 
@@ -48,6 +50,7 @@ void Graphics_ClearScreen();
 void Graphics_RefreshScreen();
 void Graphics_DisplayTile(int idTile, SDL_Rect position);
 void Graphics_DisplayPlayer(int player, int idTexturePlayer, SDL_Rect position);
+void Graphics_DisplayDebugGraphics(int id);
 void Graphics_SetZoomAllTexture(double coefZoomW, double coefZoomH);
 SDL_Rect Graphics_GetSizeTile(int idTile);
 double Graphics_GetCoefZoomW();

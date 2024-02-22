@@ -136,8 +136,25 @@ void Graphics_Init() {
         exit(EXIT_FAILURE);
     }
     TTF_Init();
+
+    SDL_Color textColor = {255, 255, 255, 255};
+    graphics.debugGraphics.font = TTF_OpenFont("media/font.ttf", 24);
     graphics.debugGraphics.texture = malloc(sizeof(SDL_Texture*) * DEBUG_LINE);
+    graphics.debugGraphics.size = malloc(sizeof(SDL_Rect) * DEBUG_LINE);
     graphics.debugGraphics.lineUsed = 0;
+    SDL_Surface *debugTextSurface = TTF_RenderText_Solid(graphics.debugGraphics.font, "Serveur : Appuyer sur C pour lancer", textColor);
+    SDL_Surface *debugTextSurface2 = TTF_RenderText_Solid(graphics.debugGraphics.font, "Client : Veuillez attendre le serveur", textColor);
+    graphics.debugGraphics.texture[0] = SDL_CreateTextureFromSurface(graphics.renderer, debugTextSurface);
+    graphics.debugGraphics.texture[1] = SDL_CreateTextureFromSurface(graphics.renderer, debugTextSurface2);
+    SDL_QueryTexture(graphics.debugGraphics.texture[0], NULL, NULL, &graphics.debugGraphics.size[0].w,  &graphics.debugGraphics.size[0].h);
+    SDL_QueryTexture(graphics.debugGraphics.texture[1], NULL, NULL, &graphics.debugGraphics.size[1].w,  &graphics.debugGraphics.size[1].h);
+    SDL_FreeSurface(debugTextSurface);
+    graphics.debugGraphics.size[0].x = 0;
+    graphics.debugGraphics.size[0].y = 0;
+    graphics.debugGraphics.size[1].x = 0;
+    graphics.debugGraphics.size[1].y = 0;
+
+
     Graphics_SetZoomAllTexture(ZOOM_TEXTURE_ORIGINAL, ZOOM_TEXTURE_ORIGINAL);
     Graphics_loadGraphicsPlayers();
     Graphics_loadGraphicsTiles();
@@ -162,9 +179,14 @@ SDL_Rect Graphics_GetTileSize(int idTile) {
 }
 
 void Graphics_DisplayPlayer(int player, int idTexturePlayer, SDL_Rect position) {
-    position.w = (int)(graphics.coefZoomW * graphics.player[player].size[idTexturePlayer].w);
-    position.h = (int)(graphics.coefZoomH * graphics.player[player].size[idTexturePlayer].h);
+    position.w = (int)(graphics.coefZoomW * graphics.player[0].size[idTexturePlayer].w);
+    position.h = (int)(graphics.coefZoomH * graphics.player[0].size[idTexturePlayer].h);
+    player = 0;
     SDL_RenderCopy(graphics.renderer, graphics.player[player].texture[idTexturePlayer], NULL, &position);
+}
+
+void Graphics_DisplayDebugGraphics(int id) {
+    SDL_RenderCopy(graphics.renderer, graphics.debugGraphics.texture[0], NULL, &graphics.debugGraphics.size[0]);
 }
 
 SDL_Rect Graphics_GetSizeTile(int idTile) {
@@ -197,6 +219,7 @@ void Graphics_closePlayer() {
 
 void Graphics_Close() {
     Graphics_closePlayer();
+
     free(graphics.tiles.size);
     for(int i = 0; i < NUMBER_TILES; i++) {
         SDL_DestroyTexture(graphics.tiles.texture[i]);
@@ -206,6 +229,9 @@ void Graphics_Close() {
     for(int i = 0; i < graphics.debugGraphics.lineUsed; i++) {
         SDL_DestroyTexture(graphics.debugGraphics.texture[i]);
     }
+    TTF_CloseFont(graphics.debugGraphics.font);
+
+    free(graphics.debugGraphics.size);
     free(graphics.debugGraphics.texture);
     TTF_Quit();
     SDL_DestroyRenderer(graphics.renderer);

@@ -29,6 +29,7 @@ void Map_addListNameMap(char *name);
 void Map_Init();
 void Map_DisplayMap();
 SDL_Rect Map_GetSize();
+int* Map_GetRow(int i);
 void Map_CloseMap();
 void Map_Close();
 int Map_GetIDTile(int x, int y);

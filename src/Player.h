@@ -14,6 +14,7 @@ typedef struct {
     int *bombe_posee;
     int bombe_speed;
     int range;
+    char actionClient;
 } Player;
 
 typedef struct {
@@ -24,6 +25,9 @@ typedef struct {
 void Player_Init(int numberPlayer, SDL_Rect *pos);
 void Player_Display();
 void Player_Close();
+SDL_Rect Player_SetPosition(int id, int x, int y);
+SDL_Rect Player_GetPosition(int id);
+int Player_GetOrientation(int id);
 //Players* Player_GetPlayers(void);
 void Player_Move(int player, int x, int y);
 
