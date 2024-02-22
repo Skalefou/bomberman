@@ -57,6 +57,11 @@ int Map_OpenMap(const int id) {
             }
         }
     }
+
+    SetBombMapDimensions(map.size_x, map.size_y);
+    SetBombMapTileMapDimensions(map.size_x, map.size_y);
+
+
     fclose(file);
     return 0;
 }

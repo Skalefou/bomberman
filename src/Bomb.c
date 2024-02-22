@@ -1,14 +1,31 @@
 #include "Bomb.h"
 
-//static Map bomb_map;
+ Map bomb_map;
 
+void SetBombMapDimensions(int x, int y) {
+    bomb_map.size_x = x;
+    bomb_map.size_y = y;
+};
+
+void SetBombMapTileMapDimensions(int x, int y) {
+    bomb_map.tileMap = malloc(y * sizeof(int*));
+    for(int i = 0; i < y; i++) {
+        bomb_map.tileMap[i] = malloc(x * sizeof(int));
+    };
+
+    for(int i = 0; i < y; i++) {
+        for(int j = 0; j < x; j++) {
+            bomb_map.tileMap[i][j] = 0;
+        };
+    };
+};
 
 int GetBombMapFromId(int x, int y) {
-    //return bomb_map.tileMap[y][x];
+    return bomb_map.tileMap[y][x];
 }
 
 void SetBombMapFromId(short x, short y){
-    //bomb_map.tileMap[y][x] = 4;
+    bomb_map.tileMap[y][x] = 4;
 };
 
 void PoserBombe(short playerid) {

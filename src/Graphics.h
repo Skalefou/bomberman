@@ -15,6 +15,7 @@
 
 #include "const.h"
 #include "Utils.h"
+#include "Bomb.h"
 
 typedef struct {
     SDL_Texture **texture;

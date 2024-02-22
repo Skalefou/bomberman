@@ -164,10 +164,11 @@ SDL_Texture* loadTexture(const char* path) {
 }
 
 void Graphics_DisplayBomb(int idTile, SDL_Rect position) {
-    position.w = (int)(graphics.coefZoomW * graphics.tiles.size[idTile].w);
-    position.h = (int)(graphics.coefZoomH * graphics.tiles.size[idTile].h);
 
     SDL_Texture * text = loadTexture("media/texture/bomb_explode_1.png");
+
+    position.w = (int)(graphics.coefZoomW * graphics.tiles.size[idTile].w);
+    position.h = (int)(graphics.coefZoomH * graphics.tiles.size[idTile].h);
 
     SDL_RenderCopy(graphics.renderer, text, NULL, &position);
 

@@ -15,6 +15,8 @@ typedef struct {
     //Player *origin;
 } Bomb;
 
+void SetBombMapTileMapDimensions(int x, int y);
+void SetBombMapDimensions(int x, int y);
 void SetBombMapFromId(short x, short y);
 int GetBombMapFromId(int x, int y);
 void PoserBombe(short playerid);
