@@ -25,7 +25,7 @@ int GetBombMapFromId(int x, int y) {
 }
 
 void SetBombMapFromId(short x, short y){
-    bomb_map.tileMap[y][x] = 4;
+    bomb_map.tileMap[y][x] = 1;
 };
 
 void PoserBombe(short playerid) {
@@ -33,13 +33,14 @@ void PoserBombe(short playerid) {
     bombe.x = PlayerGetX(playerid);
     bombe.y = PlayerGetY(playerid);
 
-    short idTile = Map_GetIDTile(bombe.x, bombe.y);
+    short idTile = GetBombMapFromId(bombe.x, bombe.y);
     printf("%d\n", idTile);
     if(idTile == 4) {
         return;
     };
 
-    Map_SetIDTile(bombe.x, bombe.y, 4);
+
+    SetBombMapFromId(bombe.x, bombe.y);
     bombe.cell_from = idTile;
     bombe.tick = 0;
     bombe.tick_rate = 1;

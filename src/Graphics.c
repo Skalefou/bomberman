@@ -165,7 +165,8 @@ SDL_Texture* loadTexture(const char* path) {
 
 void Graphics_DisplayBomb(int idTile, SDL_Rect position) {
 
-    SDL_Texture * text = loadTexture("media/texture/bomb_explode_1.png");
+    printf("%d\n", idTile);
+    SDL_Texture * text = loadTexture(idTile == 1?"media/texture/bomb_explode_1.png":"media/texture/tile_air.png");
 
     position.w = (int)(graphics.coefZoomW * graphics.tiles.size[idTile].w);
     position.h = (int)(graphics.coefZoomH * graphics.tiles.size[idTile].h);
