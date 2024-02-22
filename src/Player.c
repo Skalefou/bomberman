@@ -2,7 +2,13 @@
 
 static Players players;
 
+int PlayerGetX(int player) {
+    return players.player[player].position.x;
+};
 
+int PlayerGetY(int player) {
+    return players.player[player].position.y;
+};
 
 void Player_Init(int nbPlayer, SDL_Rect *pos) {
     players.numberPlayer = nbPlayer;

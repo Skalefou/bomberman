@@ -21,6 +21,8 @@ typedef struct {
     int numberPlayer;
 } Players;
 
+int PlayerGetX(int player);
+int PlayerGetY(int player);
 void Player_Init(int numberPlayer, SDL_Rect *pos);
 void Player_Display();
 void Player_Close();

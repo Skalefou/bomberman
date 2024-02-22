@@ -141,27 +141,52 @@ void Graphics_Init() {
 }
 
 void Graphics_DisplayTile(int idTile, SDL_Rect position) {
-    SDL_Surface *surface = IMG_Load("media/texture/explosion_1.png");
-    if (surface == NULL) {
-        fprintf(stderr, "%s\n", IMG_GetError());
-    }
     position.w = (int)(graphics.coefZoomW * graphics.tiles.size[idTile].w);
     position.h = (int)(graphics.coefZoomH * graphics.tiles.size[idTile].h);
 
     SDL_RenderCopy(graphics.renderer, graphics.tiles.texture[idTile], NULL, &position);
+};
+
+SDL_Texture* loadTexture(const char* path) {
+    SDL_Surface* loadedSurface = IMG_Load(path);
+    if(loadedSurface == NULL) {
+        printf("Unable to load image %s! SDL_image Error: %s\n", path, IMG_GetError());
+        return NULL;
+    }
+
+    SDL_Texture* newTexture = SDL_CreateTextureFromSurface(graphics.renderer, loadedSurface);
+    if(newTexture == NULL) {
+        printf("Unable to create texture from %s! SDL Error: %s\n", path, SDL_GetError());
+    }
+
+    SDL_FreeSurface(loadedSurface);
+    return newTexture;
 }
+
+void Graphics_DisplayBomb(int idTile, SDL_Rect position) {
+    position.w = (int)(graphics.coefZoomW * graphics.tiles.size[idTile].w);
+    position.h = (int)(graphics.coefZoomH * graphics.tiles.size[idTile].h);
+
+    SDL_Texture * text = loadTexture("media/texture/bomb_explode_1.png");
+
+    SDL_RenderCopy(graphics.renderer, text, NULL, &position);
+
+    SDL_DestroyTexture(text);
+
+};
 
 SDL_Rect Graphics_GetTileSize(int idTile) {
     SDL_Rect size;
     size.w = (int)(graphics.coefZoomW * graphics.tiles.size[idTile].w);
     size.h = (int)(graphics.coefZoomH * graphics.tiles.size[idTile].h);
     return size;
-}
+};
 
 void Graphics_DisplayPlayer(int player, int idTexturePlayer, SDL_Rect position) {
     position.w = (int)(graphics.coefZoomW * graphics.player[player].size[idTexturePlayer].w);
     position.h = (int)(graphics.coefZoomH * graphics.player[player].size[idTexturePlayer].h);
     SDL_RenderCopy(graphics.renderer, graphics.player[player].texture[idTexturePlayer], NULL, &position);
+
 }
 
 SDL_Rect Graphics_GetSizeTile(int idTile) {
@@ -204,3 +229,4 @@ void Graphics_Close() {
     SDL_DestroyWindow(graphics.window);
     SDL_Quit();
 }
+

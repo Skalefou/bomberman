@@ -1,5 +1,34 @@
 #include "Bomb.h"
 
+//static Map bomb_map;
+
+
+int GetBombMapFromId(int x, int y) {
+    //return bomb_map.tileMap[y][x];
+}
+
+void SetBombMapFromId(short x, short y){
+    //bomb_map.tileMap[y][x] = 4;
+};
+
+void PoserBombe(short playerid) {
+    Bomb bombe;
+    bombe.x = PlayerGetX(playerid);
+    bombe.y = PlayerGetY(playerid);
+
+    short idTile = Map_GetIDTile(bombe.x, bombe.y);
+    printf("%d\n", idTile);
+    if(idTile == 4) {
+        return;
+    };
+
+    Map_SetIDTile(bombe.x, bombe.y, 4);
+    bombe.cell_from = idTile;
+    bombe.tick = 0;
+    bombe.tick_rate = 1;
+    printf("a");
+};
+/*
 void Explosion(int** Map, int Line, int Col, Bomb* bombe, Player* Players, int* Item_map) {
     // Explosion to the right
     for (int i = 1; i <= bombe->range; i++) {
@@ -94,7 +123,7 @@ void Explosion(int** Map, int Line, int Col, Bomb* bombe, Player* Players, int* 
         }
     }
 }
-
+*/
 int make_item() {
     int r = rand() % 5 + 1;
     printf("%d\n", r);

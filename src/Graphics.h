@@ -36,6 +36,8 @@ void Graphics_Init();
 //Fonction fermant la SDL, la fenêtre et l'affichage vidéo
 
 //SDL_Surface* Graphics_resizeSurface(SDL_Surface *surface, int newWidth, int newHeight);
+SDL_Texture* loadTexture(const char* path);
+void Graphics_DisplayBomb(int idTile, SDL_Rect position);
 void Graphics_ClearScreen();
 void Graphics_RefreshScreen();
 void Graphics_DisplayTile(int idTile, SDL_Rect position);

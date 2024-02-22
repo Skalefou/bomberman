@@ -12,10 +12,13 @@ typedef struct {
     int cell_from;
     int tick;
     int tick_rate;
-    Player *origin;
+    //Player *origin;
 } Bomb;
 
-void Explosion(int** Map, int Line, int Col, Bomb* bombe, Player *Players, int* Item_map);
+void SetBombMapFromId(short x, short y);
+int GetBombMapFromId(int x, int y);
+void PoserBombe(short playerid);
+//void Explosion(int** Map, int Line, int Col, Bomb* bombe, Player *Players, int* Item_map);
 int make_item();
 void update_bomb(Bomb* bomb);
 int has_exploded(Bomb* bomb);

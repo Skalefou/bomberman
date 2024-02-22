@@ -15,6 +15,7 @@
 #include "const.h"
 #include "Utils.h"
 #include "Graphics.h"
+#include "Bomb.h"
 
 typedef struct {
     char **listNameMap;
@@ -24,6 +25,7 @@ typedef struct {
     int size_x, size_y;
 } Map;
 
+void Map_SetIDTile(int x, int y, short val);
 int Map_OpenMap(const int id);
 void Map_addListNameMap(char *name);
 void Map_Init();

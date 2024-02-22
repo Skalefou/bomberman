@@ -61,6 +61,10 @@ int Map_OpenMap(const int id) {
     return 0;
 }
 
+void Map_SetIDTile(int x, int y, short val){
+    map.tileMap[y][x] = val;
+}
+
 int Map_GetIDTile(int x, int y) {
     return map.tileMap[y][x];
 }
@@ -144,6 +148,7 @@ void Map_DisplayMap() {
             sizeTile = Graphics_GetSizeTile(map.tileMap[y][x]);
             SDL_Rect position = {(Sint16)(x * sizeTile.w * coefZoomW), (Sint16)(y * sizeTile.h * coefZoomY)};
             Graphics_DisplayTile(map.tileMap[y][x], position);
+            Graphics_DisplayBomb(GetBombMapFromId(x, y), position);
         }
     }
 };

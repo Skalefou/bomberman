@@ -50,6 +50,7 @@ void Game_RunGame() {
                                 printf("down\n");
                                 break;
                             case SDLK_SPACE:
+                                PoserBombe(0);
                                 printf("space\n");
                                 break;
                         }
