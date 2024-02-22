@@ -20,6 +20,7 @@ void Player_Display() {
     for (int i = 0; i < players.numberPlayer; i++) {
         SDL_Rect position = players.player[i].position;
         position.x *= 48;
+        position.y--;
         position.y *= 48;
         Graphics_DisplayPlayer(i, players.player[i].orientation, position);
     }
@@ -29,50 +30,50 @@ void Player_Display() {
     return SDL_Rect position;
 }*/
 
-void Player_Move(int player, int x, int y) {/*
-    if (SDL_KEYDOWN == SDLK_LEFT && players.player[player].position.x > 0){
-        int var = Map_GetIDTile(players.player[player].position.x - 1, players.player[player].position.y);
-        if (var != 3 && var != 0 && var != 4){
-            x = -1;
-        }
+void Player_Move(int player, int x, int y) {
+    if(x == -1) {
         players.player[player].orientation = PLAYER_LEFT;
-        int SizeMapX = Map_GetSizeMapX();
-    }else if(SDL_KEYDOWN == SDLK_RIGHT && players.player[player].position.x < SizeMapX - 1){
-        int var = Map_GetIDTile(players.player[player].position.x + 1, players.player[player].position.y);
-        if (var != 3 && var != 0 && var != 4){
-            x = 1;
-        }
-        players.player[player].orientation = PLAYER_RIGHT;
-    }
-    else if(SDL_KEYDOWN == SDLK_UP && players.player[player].position.y > 0){
-        int var = Map_GetIDTile(players.player[player].position.x, players.player[player].position.y + 1);
 
-        if (var != 3 && var != 0 && var != 4){
-            y = -1;
-        }
-        players.player[player].orientation = PLAYER_UP;
-        int SizeMapY = Map_GetSizeMapY();
-    }
-    else if(SDL_KEYDOWN == SDLK_DOWN && players.player[player].position.y < SizeMapY - 1){
-        int var = Map_GetIDTile(players.player[player].position.x - 1, players.player[player].position.y - 1);
-        if (var != 3 && var != 0 && var != 4){
-            y = 1;
-        }
-        players.player[player].orientation = PLAYER_DOWN;
-    }
-*/
-    if (x == 1) {
-        players.player[player].orientation = PLAYER_RIGHT;
-    } else if (x == -1) {
-        players.player[player].orientation = PLAYER_LEFT;
-    } else if (y == 1) {
-        players.player[player].orientation = PLAYER_DOWN;
-    } else if (y == -1) {
-        players.player[player].orientation = PLAYER_UP;
-    }
+        if(players.player[player].position.x > 0) {
+            int var = Map_GetIDTile(players.player[player].position.x - 1, players.player[player].position.y);
+            if(var != 3 && var != 0 && var != 4) {
+                players.player[player].position.x--;
+            };
+        };
 
-    players.player[player].position.x += x;
-    players.player[player].position.y += y;
+    } else if(x == 1) {
+        players.player[player].orientation = PLAYER_RIGHT;
+
+        if(players.player[player].position.x < Map_GetSizeMapX() - 1) {
+            int var = Map_GetIDTile(players.player[player].position.x + 1, players.player[player].position.y);
+            if(var != 3 && var != 0 && var != 4) {
+                players.player[player].position.x++;
+            };
+        };
+
+    } else if(y == -1) {
+        players.player[player].orientation = PLAYER_UP;
+
+        if(players.player[player].position.y >= 0) {
+            int var = Map_GetIDTile(players.player[player].position.x, players.player[player].position.y - 1);
+            if(var != 3 && var != 0 && var != 4) {
+                players.player[player].position.y--;
+            };
+        };
+
+    } else if(y == 1) {
+        players.player[player].orientation = PLAYER_DOWN;
+
+        if(players.player[player].position.y < Map_GetSizeMapY() + 1) {
+            int var = Map_GetIDTile(players.player[player].position.x, players.player[player].position.y + 1);
+            if(var != 3 && var != 0 && var != 4) {
+                players.player[player].position.y++;
+            };
+        };
+
+        printf("%d %d\n", players.player[player].position.x, players.player[player].position.y);
+        printf("%d\n", Map_GetIDTile(players.player[player].position.x, players.player[player].position.y));
+    };
 }
 
 
