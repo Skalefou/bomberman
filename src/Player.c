@@ -42,6 +42,8 @@ void Player_Move(int player, int x, int y) {
 
         if(players.player[player].position.x > 0) {
             int var = Map_GetIDTile(players.player[player].position.x - 1, players.player[player].position.y);
+            short x = GetBombMapFromId(players.player[player].position.x - 1, players.player[player].position.y);
+            if(x == 1)return;
             if(var != 3 && var != 0 && var != 4) {
                 players.player[player].position.x--;
             };
@@ -52,6 +54,8 @@ void Player_Move(int player, int x, int y) {
 
         if(players.player[player].position.x < Map_GetSizeMapX() - 1) {
             int var = Map_GetIDTile(players.player[player].position.x + 1, players.player[player].position.y);
+            short x = GetBombMapFromId(players.player[player].position.x + 1, players.player[player].position.y);
+            if(x == 1)return;
             if(var != 3 && var != 0 && var != 4) {
                 players.player[player].position.x++;
             };
@@ -62,6 +66,8 @@ void Player_Move(int player, int x, int y) {
 
         if(players.player[player].position.y >= 0) {
             int var = Map_GetIDTile(players.player[player].position.x, players.player[player].position.y - 1);
+            short x = GetBombMapFromId(players.player[player].position.x, players.player[player].position.y - 1);
+            if(x == 1)return;
             if(var != 3 && var != 0 && var != 4) {
                 players.player[player].position.y--;
             };
@@ -72,6 +78,8 @@ void Player_Move(int player, int x, int y) {
 
         if(players.player[player].position.y < Map_GetSizeMapY() + 1) {
             int var = Map_GetIDTile(players.player[player].position.x, players.player[player].position.y + 1);
+            short x = GetBombMapFromId(players.player[player].position.x, players.player[player].position.y + 1);
+            if(x == 1)return;
             if(var != 3 && var != 0 && var != 4) {
                 players.player[player].position.y++;
             };

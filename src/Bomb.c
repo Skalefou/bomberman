@@ -34,7 +34,7 @@ void PoserBombe(short playerid) {
     bombe.y = PlayerGetY(playerid);
 
     short idTile = GetBombMapFromId(bombe.x, bombe.y);
-    printf("%d\n", idTile);
+
     if(idTile == 4) {
         return;
     };
